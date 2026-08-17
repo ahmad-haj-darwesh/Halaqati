@@ -1,0 +1,24 @@
+# IDE / tooling
+.idea/
+.qoder/
+.vscode/
+
+# Build & deployment artifacts
+backend/deploy_output/
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# Service account / signing secrets
+**/firebase-credentials.json
+*.jks
+*.keystore
+*.p12
+*.pem
+
+# OS
+Thumbs.db
+.DS_Store
