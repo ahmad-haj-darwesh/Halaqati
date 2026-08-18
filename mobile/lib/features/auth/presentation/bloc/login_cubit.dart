@@ -53,7 +53,7 @@ class LoginCubit extends Cubit<LoginState> {
       );
       emit(LoginSuccess(role: result.role));
     } catch (e) {
-      final errorMessage = e is ApiException ? e.message : e.toString();
+      final errorMessage = friendlyErrorMessage(e);
       emit(LoginFailure(message: errorMessage));
     }
   }

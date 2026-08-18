@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/examiner_models.dart';
 import '../../data/examiner_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // --- States ---
 abstract class ExamTestStepperState extends Equatable {
@@ -135,7 +136,7 @@ class ExamTestStepperCubit extends Cubit<ExamTestStepperState> {
       final list = await _repo.fetchTests();
       emit(cur.copyWith(tests: list, loadingTests: false));
     } catch (e) {
-      emit(cur.copyWith(testsError: e.toString(), loadingTests: false));
+      emit(cur.copyWith(testsError: friendlyErrorMessage(e), loadingTests: false));
     }
   }
 
@@ -154,7 +155,7 @@ class ExamTestStepperCubit extends Cubit<ExamTestStepperState> {
       emit(cur.copyWith(assignments: list, loadingAssignments: false, step: 1));
     } catch (e) {
       emit(cur.copyWith(loadingAssignments: false));
-      emit(StepperErrorNotification(e.toString(), _currentDataState));
+      emit(StepperErrorNotification(friendlyErrorMessage(e), _currentDataState));
     }
   }
 
@@ -198,7 +199,7 @@ class ExamTestStepperCubit extends Cubit<ExamTestStepperState> {
       emit(cur.copyWith(submitting: false, success: true, submitResponse: res));
     } catch (e) {
       emit(cur.copyWith(submitting: false));
-      emit(StepperErrorNotification(e.toString(), _currentDataState));
+      emit(StepperErrorNotification(friendlyErrorMessage(e), _currentDataState));
     }
   }
 

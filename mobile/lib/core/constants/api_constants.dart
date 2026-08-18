@@ -6,7 +6,7 @@ class ApiConstants {
   ApiConstants._();
 
   // 👈 تم وضع رابط السيرفر الحقيقي هنا للإنتاج
-  static const String baseUrl = 'https://halaqati.wuaze.com/api';
+  static const String baseUrl = 'https://halaqaty.de/api';
 
   // مسارات المصادقة والإشعارات
   static const String loginEndpoint = '/login';
@@ -66,7 +66,7 @@ class ApiConstants {
       return t;
     }
     final path = t.startsWith('/') ? t : '/$t';
-    final origin = Uri.parse(baseUrl).origin; // سيأخذ https://halaqati.wuaze.com
+    final origin = Uri.parse(baseUrl).origin; 
     return '$origin$path';
   }
 }

@@ -83,14 +83,7 @@ class ApiClient {
       case DioExceptionType.receiveTimeout:
         message = 'انتهت مهلة الاتصال. تحقق من الإنترنت.';
       case DioExceptionType.badResponse:
-        final errors = e.response?.data?['errors'];
-        if (errors is Map) {
-          message = errors.values.first is List
-              ? (errors.values.first as List).first.toString()
-              : errors.values.first.toString();
-        } else {
-          message = e.response?.data?['message'] ?? 'خطأ من الخادم.';
-        }
+        message = _messageFromErrorBody(e.response?.data, statusCode);
       case DioExceptionType.connectionError:
         message = 'تعذّر الاتصال بالخادم.';
       default:
@@ -98,6 +91,48 @@ class ApiClient {
     }
 
     return ApiException(message: message, statusCode: statusCode);
+  }
+
+  /// استخراج رسالة مفهومة من جسم استجابة الخطأ.
+  ///
+  /// Arabic: الجسم ليس دائماً خريطة JSON — قد يعيد وسيط في الشبكة (بوابة WiFi
+  /// أو صفحة خطأ من الاستضافة) صفحة HTML نصية. وفهرسة نص بمفتاح نصي تُطلق
+  /// `TypeError` يتجاوز معالجة الأخطاء نفسها ويصل للمستخدم كرسالة تقنية، لذا
+  /// يُفحص النوع قبل أي فهرسة، وتُحمى `first` من الحالات الفارغة.
+  /// EN: Error bodies are not always JSON maps (HTML portals, host error pages);
+  /// guard the type before indexing and never call `first` on empty collections.
+  static String _messageFromErrorBody(dynamic data, int? statusCode) {
+    if (data is Map) {
+      final errors = data['errors'];
+      if (errors is Map && errors.isNotEmpty) {
+        final first = errors.values.first;
+        if (first is List) {
+          if (first.isNotEmpty) return first.first.toString();
+        } else if (first != null) {
+          return first.toString();
+        }
+      }
+
+      final serverMessage = data['message'];
+      if (serverMessage is String && serverMessage.isNotEmpty) {
+        return serverMessage;
+      }
+      if (statusCode == 401) return 'انتهت الجلسة. سجّل الدخول من جديد.';
+      if (statusCode == 403) return 'لا تملك صلاحية لهذا الإجراء.';
+      if (statusCode != null && statusCode >= 500) {
+        return 'الخادم غير متاح حالياً. حاول لاحقاً. ($statusCode)';
+      }
+
+      return 'تعذّر إتمام الطلب من الخادم. ($statusCode)';
+    }
+
+    // جسم غير JSON يعني أن الطلب لم يصل إلى الـ API أصلاً، بل ردّ عليه وسيط في
+    // الطريق (جدار حماية الاستضافة، بوابة WiFi، أو مزوّد الخدمة) بصفحة HTML.
+    // رسالة الصلاحيات هنا مضلِّلة: السبب في الشبكة لا في حساب المستخدم.
+    return statusCode != null
+        ? 'تعذّر الوصول إلى الخادم — حُجب الطلب في الطريق ($statusCode). '
+            'جرّب تعطيل VPN أو تبديل الشبكة.'
+        : 'تعذّر الوصول إلى الخادم. تحقق من اتصال الإنترنت.';
   }
 }
 

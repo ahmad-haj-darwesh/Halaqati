@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/examiner_models.dart';
 import '../../data/examiner_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // --- States ---
 abstract class ExaminerStudentDetailState extends Equatable {
@@ -40,7 +41,7 @@ class ExaminerStudentDetailCubit extends Cubit<ExaminerStudentDetailState> {
       final detail = await _repo.fetchStudentDetail(studentId);
       emit(DetailLoaded(detail));
     } catch (e) {
-      emit(DetailError(e.toString()));
+      emit(DetailError(friendlyErrorMessage(e)));
     }
   }
 }

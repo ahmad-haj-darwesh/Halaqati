@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../data/examiner_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // ==========================================
 // 1. Cubit قائمة الاختبارات (Tests)
@@ -34,7 +35,7 @@ class ExaminerTestsCubit extends Cubit<ExaminerTestsState> {
       final list = await _repo.fetchTests();
       emit(TestsLoaded(list, list));
     } catch (e) {
-      emit(TestsError(e.toString()));
+      emit(TestsError(friendlyErrorMessage(e)));
     }
   }
 
@@ -89,7 +90,7 @@ class ExaminerAssignmentsCubit extends Cubit<ExaminerAssignmentsState> {
       final list = await _repo.fetchTestAssignments();
       emit(AssignmentsLoaded(all: list, filtered: list));
     } catch (e) {
-      emit(AssignmentsError(e.toString()));
+      emit(AssignmentsError(friendlyErrorMessage(e)));
     }
   }
 
@@ -146,7 +147,7 @@ class ExaminerResultsCubit extends Cubit<ExaminerResultsState> {
       final list = await _repo.fetchTestResults();
       emit(ResultsLoaded(list, list));
     } catch (e) {
-      emit(ResultsError(e.toString()));
+      emit(ResultsError(friendlyErrorMessage(e)));
     }
   }
 

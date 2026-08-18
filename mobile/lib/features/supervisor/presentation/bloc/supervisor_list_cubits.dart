@@ -44,7 +44,7 @@ class SupervisorCentersCubit extends Cubit<SupervisorCentersState> {
       final list = await _repo.fetchCenters();
       emit(CentersLoaded(list, list));
     } catch (e) {
-      emit(CentersError(e is ApiException ? e.message : e.toString()));
+      emit(CentersError(friendlyErrorMessage(e)));
     }
   }
 
@@ -117,7 +117,7 @@ class SupervisorHalaqahsCubit extends Cubit<SupervisorHalaqahsState> {
 
       emit(HalaqahsLoaded(hRows, hRows, map));
     } catch (e) {
-      emit(HalaqahsError(e is ApiException ? e.message : e.toString()));
+      emit(HalaqahsError(friendlyErrorMessage(e)));
     }
   }
 
@@ -176,7 +176,7 @@ class SupervisorTeachersCubit extends Cubit<SupervisorTeachersState> {
       final list = await _repo.fetchTeachers();
       emit(TeachersLoaded(list, list));
     } catch (e) {
-      emit(TeachersError(e is ApiException ? e.message : e.toString()));
+      emit(TeachersError(friendlyErrorMessage(e)));
     }
   }
 

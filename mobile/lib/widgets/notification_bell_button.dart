@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../core/constants/api_constants.dart';
-import '../core/errors/api_exception.dart';
 import '../features/notifications/presentation/notifications_page.dart';
 import '../services/api/api_client.dart';
 import '../storage/token_storage.dart';
@@ -33,11 +32,13 @@ class _NotificationBellButtonState extends State<NotificationBellButton> {
   Future<void> _fetch() async {
     try {
       final res = await _api.get(ApiConstants.notificationsUnreadCountEndpoint);
-      final map = res.data as Map<String, dynamic>;
-      final c = map['count'];
+      final data = res.data;
+      final c = data is Map ? data['count'] : null;
       if (!mounted) return;
       setState(() => _count = c is int ? c : int.tryParse('$c'));
-    } on ApiException {
+    } catch (_) {
+      // عدّاد الإشعارات ثانوي: أي فشل (شبكة أو جسم غير متوقع) يخفيه بصمت
+      // بدل إسقاط الشاشة التي يظهر فيها.
       if (mounted) setState(() => _count = null);
     }
   }

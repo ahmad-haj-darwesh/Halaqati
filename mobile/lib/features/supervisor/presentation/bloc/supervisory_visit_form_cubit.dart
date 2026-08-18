@@ -146,7 +146,7 @@ class SupervisoryVisitFormCubit extends Cubit<SupervisoryVisitFormState> {
       ));
     } catch (e) {
       emit(state.copyWith(
-        metaError: e is ApiException ? e.message : e.toString(),
+        metaError: friendlyErrorMessage(e),
         loadingMeta: false,
       ));
     }
@@ -195,7 +195,7 @@ class SupervisoryVisitFormCubit extends Cubit<SupervisoryVisitFormState> {
     } catch (e) {
       emit(state.copyWith(
         submitting: false,
-        submitError: e is ApiException ? e.message : e.toString(),
+        submitError: friendlyErrorMessage(e),
       ));
     }
   }

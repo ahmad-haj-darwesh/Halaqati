@@ -49,7 +49,7 @@ class TeacherDetailCubit extends Cubit<TeacherDetailState> {
       final detail = await _repo.fetchTeacherDetail(teacherId);
       emit(TeacherDetailLoaded(detail));
     } catch (e) {
-      emit(TeacherDetailError(e is ApiException ? e.message : e.toString()));
+      emit(TeacherDetailError(friendlyErrorMessage(e)));
     }
   }
 }

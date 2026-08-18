@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../data/teacher_student_profile_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 abstract class StudentProfileState extends Equatable {
   @override
@@ -50,7 +51,7 @@ class StudentProfileCubit extends Cubit<StudentProfileState> {
       final s = await _repo.fetch(studentId);
       emit(ProfileLoaded(s));
     } catch (e) {
-      emit(ProfileError(e.toString()));
+      emit(ProfileError(friendlyErrorMessage(e)));
     }
   }
 

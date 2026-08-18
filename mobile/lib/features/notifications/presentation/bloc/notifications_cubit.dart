@@ -87,7 +87,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         lastPage: map['last_page'] as int? ?? 1,
       ));
     } catch (e) {
-      emit(NotificationsError(e is ApiException ? e.message : e.toString()));
+      emit(NotificationsError(friendlyErrorMessage(e)));
     }
   }
 
@@ -155,7 +155,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       await loadInitial();
     } catch (e) {
       // في حال الفشل يمكننا تمرير الخطأ، ولكن يُفضل إعادة جلب البيانات على أي حال
-      final errorMessage = e is ApiException ? e.message : e.toString();
+      final errorMessage = friendlyErrorMessage(e);
       emit(NotificationsError(errorMessage));
     }
   }

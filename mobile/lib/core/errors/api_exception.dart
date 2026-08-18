@@ -11,3 +11,15 @@ class ApiException implements Exception {
   @override
   String toString() => 'ApiException($statusCode): $message';
 }
+
+/// تحويل أي خطأ إلى رسالة صالحة للعرض للمستخدم.
+///
+/// Arabic: `ApiException` يحمل رسالة عربية جاهزة، أما بقية الأخطاء (مثل
+/// `TypeError` أو أخطاء قاعدة البيانات المحلية) فرسائلها تقنية بالإنجليزية ولا
+/// تصلح للعرض — تُستبدل برسالة عامة بدل تسريب تفاصيل داخلية إلى الشاشة.
+/// EN: Maps any thrown object to a user-facing message, hiding internal errors.
+String friendlyErrorMessage(Object error) {
+  if (error is ApiException) return error.message;
+
+  return 'حدث خطأ غير متوقع. حاول مرة أخرى.';
+}

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/supervisor_models.dart';
 import '../../data/supervisor_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // --- States ---
 abstract class SupervisorHomeState extends Equatable {
@@ -62,7 +63,7 @@ class SupervisorHomeCubit extends Cubit<SupervisorHomeState> {
         managedCount: me['managed_centers_count'] as int?,
       ));
     } catch (e) {
-      emit(SupervisorHomeError(e.toString()));
+      emit(SupervisorHomeError(friendlyErrorMessage(e)));
     }
   }
 }

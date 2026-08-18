@@ -33,7 +33,12 @@ Future<void> main() async {
   
   // 👈 استخدام الاعتماد المحقون بدلاً من SecureTokenStorage()
   final storage = sl<TokenStorage>();
-  await registerFcmTokenListeners(storage);
+  // تمرير المزامنة مع الخادم: عند تدوير Firebase للتوكن يُرسَل الجديد فوراً بدل
+  // انتظار تسجيل الدخول التالي.
+  await registerFcmTokenListeners(
+    storage,
+    onTokenChanged: () => sl<AuthRepository>().syncFcmTokenToServer(),
+  );
 
   // بدء مراقبة الشبكة وتفريغ ما تبقّى في الطابور من جلسة سابقة (مثلاً إن أُغلق
   // التطبيق قبل عودة الإنترنت). لا يُعطّل الإقلاع لو فشل فتح قاعدة البيانات المحلية.

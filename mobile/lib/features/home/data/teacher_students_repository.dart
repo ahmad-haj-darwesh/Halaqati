@@ -43,7 +43,17 @@ class TeacherStudentsRepositoryImpl implements TeacherStudentsRepository {
   @override
   Future<List<StudentListItemDto>> fetchAll() async {
     final res = await _apiClient.get(ApiConstants.teacherStudentsEndpoint);
-    final list = (res.data as List<dynamic>);
-    return list.map((e) => StudentListItemDto.fromJson(e as Map<String, dynamic>)).toList();
+
+    // الخادم يغلّف القائمة داخل مفتاح `data` — انظر TeacherStudentsController::index.
+    // نقبل الشكلين (مغلّف أو قائمة مباشرة) حتى لا ينهار التطبيق إن تغيّر العقد.
+    final raw = res.data;
+    final list = raw is List
+        ? raw
+        : (raw is Map ? (raw['data'] as List<dynamic>? ?? const []) : const []);
+
+    return list
+        .whereType<Map>()
+        .map((e) => StudentListItemDto.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 }

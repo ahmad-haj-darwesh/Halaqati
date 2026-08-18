@@ -73,7 +73,7 @@ class _StudentDetailSheetContentState extends State<_StudentDetailSheetContent> 
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e is ApiException ? e.message : e.toString();
+        _error = friendlyErrorMessage(e);
         _loading = false;
       });
     }

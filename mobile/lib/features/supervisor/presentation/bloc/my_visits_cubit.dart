@@ -78,7 +78,7 @@ class MyVisitsCubit extends Cubit<MyVisitsState> {
         lastPage: data.lastPage,
       ));
     } catch (e) {
-      emit(MyVisitsError(e is ApiException ? e.message : e.toString()));
+      emit(MyVisitsError(friendlyErrorMessage(e)));
     }
   }
 

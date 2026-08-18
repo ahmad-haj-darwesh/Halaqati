@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/examiner_models.dart';
 import '../../data/examiner_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // --- States ---
 abstract class ExamDailySummaryState extends Equatable {
@@ -52,7 +53,7 @@ class ExamDailySummaryCubit extends Cubit<ExamDailySummaryState> {
       final summary = await _repo.fetchDailySummary(date: _formatDate(currentDate));
       emit(ExamDailySummaryLoaded(summary: summary, date: currentDate));
     } catch (e) {
-      emit(ExamDailySummaryError(message: e.toString(), date: currentDate));
+      emit(ExamDailySummaryError(message: friendlyErrorMessage(e), date: currentDate));
     }
   }
 

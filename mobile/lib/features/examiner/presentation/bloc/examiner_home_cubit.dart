@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/examiner_models.dart';
 import '../../data/examiner_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // --- States ---
 abstract class ExaminerHomeState extends Equatable {
@@ -53,7 +54,7 @@ class ExaminerHomeCubit extends Cubit<ExaminerHomeState> {
         examinerName: me['name']?.toString() ?? 'مختبر',
       ));
     } catch (e) {
-      emit(ExaminerHomeError(e.toString()));
+      emit(ExaminerHomeError(friendlyErrorMessage(e)));
     }
   }
 }

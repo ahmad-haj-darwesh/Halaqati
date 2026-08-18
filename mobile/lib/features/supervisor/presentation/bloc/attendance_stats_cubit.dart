@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/supervisor_models.dart';
 import '../../data/supervisor_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // ==========================================
 // الحالات (States)
@@ -56,7 +57,7 @@ class AttendanceStatsCubit extends Cubit<AttendanceStatsState> {
       final stats = await _repo.fetchAttendanceStats(days: currentDays);
       emit(AttendanceStatsLoaded(stats: stats, days: currentDays));
     } catch (e) {
-      emit(AttendanceStatsError(message: e.toString(), days: currentDays));
+      emit(AttendanceStatsError(message: friendlyErrorMessage(e), days: currentDays));
     }
   }
 

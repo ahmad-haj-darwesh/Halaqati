@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../data/teacher_daily_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 abstract class MonthlyReportState extends Equatable {
   @override
@@ -36,7 +37,7 @@ class MonthlyReportCubit extends Cubit<MonthlyReportState> {
       final report = await _repo.getMonthlyReport(month: month);
       emit(MonthlyReportLoaded(report, month));
     } catch (e) {
-      emit(MonthlyReportError(e.toString()));
+      emit(MonthlyReportError(friendlyErrorMessage(e)));
     }
   }
 }

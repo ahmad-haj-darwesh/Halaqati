@@ -24,7 +24,10 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 /// Arabic: يحفظ التوكن محلياً لاستخدامه لاحقاً من الباكند لإرسال الإشعارات.
 /// EN: Requests permissions, stores the token, and listens for token refresh events.
 // 👈 التعديل هنا: استخدام TokenStorage بدلاً من SecureTokenStorage
-Future<void> registerFcmTokenListeners(TokenStorage storage) async { 
+Future<void> registerFcmTokenListeners(
+  TokenStorage storage, {
+  Future<void> Function()? onTokenChanged,
+}) async {
   try {
     final messaging = FirebaseMessaging.instance;
     await messaging.setAutoInitEnabled(true);
@@ -38,10 +41,14 @@ Future<void> registerFcmTokenListeners(TokenStorage storage) async {
     final token = await messaging.getToken();
     if (token != null && token.isNotEmpty) {
       await storage.saveFcmToken(token);
+      await onTokenChanged?.call();
     }
 
     messaging.onTokenRefresh.listen((newToken) async {
       await storage.saveFcmToken(newToken);
+      // بدون هذا السطر يبقى التوكن الجديد على الجهاز فقط، ويستمر الخادم بالإرسال
+      // إلى توكن ميت فتتوقف الإشعارات بصمت حتى تسجيل الدخول التالي.
+      await onTokenChanged?.call();
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {

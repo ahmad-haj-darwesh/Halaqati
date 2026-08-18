@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../data/supervisor_models.dart';
 import '../../data/supervisor_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // ==========================================
 // الحالات (States)
@@ -64,7 +65,7 @@ class HalaqahDailyCubit extends Cubit<HalaqahDailyState> {
       
       emit(HalaqahDailyLoaded(data: data, date: targetDate));
     } catch (e) {
-      emit(HalaqahDailyError(message: e.toString(), date: targetDate));
+      emit(HalaqahDailyError(message: friendlyErrorMessage(e), date: targetDate));
     }
   }
 

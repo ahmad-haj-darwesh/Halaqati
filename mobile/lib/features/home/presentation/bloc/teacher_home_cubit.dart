@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../data/teacher_own_profile_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // الحالات
 abstract class TeacherHomeState extends Equatable {
@@ -44,7 +45,7 @@ class TeacherHomeCubit extends Cubit<TeacherHomeState> {
       final data = await _repo.fetchProfile(); //
       emit(HomeLoaded(data));
     } catch (e) {
-      emit(HomeError(e.toString()));
+      emit(HomeError(friendlyErrorMessage(e)));
     }
   }
 
@@ -57,7 +58,7 @@ class TeacherHomeCubit extends Cubit<TeacherHomeState> {
         final updatedData = await _repo.fetchProfile(); //
         emit(HomeLoaded(updatedData));
       } catch (e) {
-        emit(HomeError("فشل رفع الصورة: $e"));
+        emit(HomeError("فشل رفع الصورة: ${friendlyErrorMessage(e)}"));
         emit(HomeLoaded(currentProfile));
       }
     }

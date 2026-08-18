@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "271743626110",
+    "project_id": "halaqaty3",
+    "storage_bucket": "halaqaty3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:271743626110:android:b5672caac63860c1b6a12f",
+        "android_client_info": {
+          "package_name": "com.mahmoud.halaqati"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_w_EDJx_H9joBkVZNdfuwLv5e4VT4iE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

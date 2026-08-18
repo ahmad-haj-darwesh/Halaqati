@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../data/teacher_students_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 abstract class StudentsState extends Equatable {
   @override
@@ -37,7 +38,7 @@ class StudentsCubit extends Cubit<StudentsState> {
       final list = await _repo.fetchAll();
       emit(StudentsLoaded(list, list));
     } catch (e) {
-      emit(StudentsError(e.toString()));
+      emit(StudentsError(friendlyErrorMessage(e)));
     }
   }
 

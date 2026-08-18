@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../../core/offline/offline_gateway.dart';
 import '../../data/teacher_daily_repository.dart';
+import '../../../../core/errors/api_exception.dart';
 
 // --- 1. تعريف الحالات (States) ---
 abstract class DailyRecordState extends Equatable {
@@ -66,7 +67,7 @@ class DailyRecordCubit extends Cubit<DailyRecordState> {
       final res = await _repo.getToday(date: date);
       emit(DailyRecordLoaded(res.students, res.reasons));
     } catch (e) {
-      emit(DailyRecordError(e.toString()));
+      emit(DailyRecordError(friendlyErrorMessage(e)));
     }
   }
 
@@ -84,7 +85,7 @@ class DailyRecordCubit extends Cubit<DailyRecordState> {
       emit(DailyRecordQueuedOffline(e.message));
       emit(DailyRecordLoaded(students, reasons));
     } catch (e) {
-      emit(DailyRecordError("فشل الحفظ: $e"));
+      emit(DailyRecordError("فشل الحفظ: ${friendlyErrorMessage(e)}"));
       emit(DailyRecordLoaded(students, reasons));
     }
   }

@@ -110,6 +110,11 @@ class AuthRepository {
   /// Arabic: يحاول إرسال توكن FCM إلى السيرفر بأفضل جهد (best-effort) بدون إزعاج المستخدم.
   /// EN: Best-effort sync of local FCM token to the server.
   Future<void> syncFcmTokenToServer() async {
+    // نقطة `/api/fcm-token` محميّة؛ استدعاؤها قبل تسجيل الدخول يعطي 401 بلا فائدة.
+    if (!await _tokenStorage.hasToken()) {
+      return;
+    }
+
     final fcm = await _tokenStorage.getFcmToken();
     if (fcm == null || fcm.isEmpty) {
       return;
