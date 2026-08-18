@@ -17,7 +17,7 @@ class LowAttendanceHalaqahsWidget extends ChartWidget
 {
     protected static ?string $heading = 'أقل الحلقات حضوراً (آخر 7 أيام)';
 
-    protected static ?int $sort = 42;
+    protected static ?int $sort = 12;
 
     protected int|string|array $columnSpan = 'half';
 

@@ -20,9 +20,9 @@ class TopAbsentTeachersWidget extends BaseWidget
 {
     protected static ?string $heading = 'أكثر المستخدمين تسجيلاً لغياب الطلاب (هذا الشهر)';
 
-    protected static ?int $sort = 44;
+    protected static ?int $sort = 13;
 
-    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'half';
 
     /**
      * تعريف جدول الويدجت.
@@ -51,6 +51,8 @@ class TopAbsentTeachersWidget extends BaseWidget
                 ->columns([
                     Tables\Columns\TextColumn::make('name')->label('المستخدم'),
                 ])
+                ->emptyStateHeading('لا توجد سجلات غياب هذا الشهر')
+                ->emptyStateDescription('تظهر هنا أسماء من سجّلوا غياب الطلاب، مرتّبة تنازلياً.')
                 ->paginated(false);
         }
 

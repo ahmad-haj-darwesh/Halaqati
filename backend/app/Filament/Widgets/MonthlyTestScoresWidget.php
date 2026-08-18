@@ -16,7 +16,7 @@ class MonthlyTestScoresWidget extends ChartWidget
 {
     protected static ?string $heading = 'متوسط نتائج الاختبارات — آخر 6 أشهر';
 
-    protected static ?int $sort = 41;
+    protected static ?int $sort = 22;
 
     protected int|string|array $columnSpan = 'half';
 

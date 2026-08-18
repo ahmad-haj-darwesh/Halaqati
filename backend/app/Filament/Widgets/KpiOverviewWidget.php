@@ -16,6 +16,10 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
  */
 class KpiOverviewWidget extends StatsOverviewWidget
 {
+    protected static ?int $sort = 1;
+
+    protected int|string|array $columnSpan = 'full';
+
     use InteractsWithPageFilters;
 
     /**

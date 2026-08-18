@@ -67,10 +67,9 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Pages\AdminDashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            // ودجات لوحة المؤشرات تُسجَّل داخل الصفحة نفسها (AdminDashboard::getWidgets)
+            // لأنها تعتمد على فلاتر الصفحة؛ التسجيل هنا كان يجعلها غير معروضة إطلاقاً.
             ->widgets([
-                StatsOverviewWidget::class,
-                SupervisionLevelDistributionWidget::class,
-                SupervisionAvgScoreByTeacherWidget::class,
                 Widgets\AccountWidget::class,
             ])
             ->middleware([

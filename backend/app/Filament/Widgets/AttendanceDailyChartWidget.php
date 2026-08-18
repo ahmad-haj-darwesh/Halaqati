@@ -18,7 +18,9 @@ class AttendanceDailyChartWidget extends ChartWidget
     use InteractsWithPageFilters;
 
     protected static ?string $heading = 'الحضور يوميًا';
-    protected static ?int $sort = 10;
+    protected static ?int $sort = 11;
+
+    protected int|string|array $columnSpan = 'full';
 
     /**
      * بيانات المخطط (Labels/Datasets).

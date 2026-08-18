@@ -16,7 +16,7 @@ class VisitScoresComparisonWidget extends ChartWidget
 {
     protected static ?string $heading = 'مقارنة نتائج الزيارات الميدانية — آخر 6 أشهر';
 
-    protected static ?int $sort = 43;
+    protected static ?int $sort = 33;
 
     protected int|string|array $columnSpan = 'full';
 

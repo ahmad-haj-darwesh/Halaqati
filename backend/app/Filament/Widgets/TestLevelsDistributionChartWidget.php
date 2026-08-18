@@ -18,7 +18,9 @@ class TestLevelsDistributionChartWidget extends ChartWidget
     use InteractsWithPageFilters;
 
     protected static ?string $heading = 'توزيع مستويات الاختبارات';
-    protected static ?int $sort = 20;
+    protected static ?int $sort = 21;
+
+    protected int|string|array $columnSpan = 'half';
 
     /**
      * بيانات المخطط (Labels/Datasets).
@@ -47,7 +49,7 @@ class TestLevelsDistributionChartWidget extends ChartWidget
         $levels = $kpis['tests']['levels'] ?? [];
 
         return [
-            'labels' => ['Excellent', 'Good', 'Acceptable', 'Weak'],
+            'labels' => ['ممتاز', 'جيد', 'مقبول', 'ضعيف'],
             'datasets' => [
                 [
                     'label' => 'النتائج',

@@ -858,3 +858,43 @@ textarea:focus,
 .fi-fo-field-wrp-hint {
     color: var(--text-muted) !important;
 }
+
+/* ================================================
+   عناوين أقسام لوحة المؤشرات
+   ================================================ */
+.fi-dashboard-section-heading {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    padding-top: 10px !important;
+}
+
+.fi-dashboard-section-heading-text {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    flex-shrink: 0 !important;
+}
+
+.fi-dashboard-section-heading h2 {
+    margin: 0 !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    color: var(--text-heading) !important;
+    line-height: 1.4 !important;
+}
+
+.fi-dashboard-section-heading p {
+    margin: 0 !important;
+    font-size: 12.5px !important;
+    color: var(--text-hint) !important;
+    line-height: 1.6 !important;
+}
+
+/* الخيط الذهبي يمتد بعد العنوان */
+.fi-dashboard-section-heading-rule {
+    flex-grow: 1 !important;
+    height: 1px !important;
+    background: linear-gradient(to left, transparent, var(--accent)) !important;
+    opacity: .55 !important;
+}

@@ -18,7 +18,9 @@ class TopReasonsTableWidget extends Widget
     use InteractsWithPageFilters;
 
     protected static ?string $heading = 'أكثر أسباب التميّز/التقصير';
-    protected static ?int $sort = 30;
+    protected static ?int $sort = 14;
+
+    protected int|string|array $columnSpan = 'full';
 
     protected static string $view = 'filament.widgets.top-reasons-table';
 

@@ -76,11 +76,25 @@ class AdminDashboard extends BaseDashboard
             ->columns(4);
     }
 
+    /**
+     * لا ودجات في رأس الصفحة.
+     *
+     * Arabic: ودجات الرأس تُرسم فوق نموذج الفلاتر، فتظهر الأرقام قبل أن يعرف
+     * المستخدم نطاقها. لذلك نقلنا بطاقات المؤشرات إلى getWidgets() أسفل الفلاتر.
+     * EN: Header widgets render above the filters form, so KPI cards moved into getWidgets().
+     */
     protected function getHeaderWidgets(): array
     {
-        return [
-            \App\Filament\Widgets\KpiOverviewWidget::class,
-        ];
+        return [];
+    }
+
+    /**
+     * عدد أعمدة شبكة الودجات.
+     * EN: Dashboard grid columns.
+     */
+    public function getColumns(): int|string|array
+    {
+        return 2;
     }
 
     /**
@@ -92,13 +106,28 @@ class AdminDashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
+            // الملخّص
+            \App\Filament\Widgets\SummarySectionWidget::class,
+            \App\Filament\Widgets\KpiOverviewWidget::class,
+            \App\Filament\Widgets\StatsOverviewWidget::class,
+
+            // الحضور والمتابعة اليومية
+            \App\Filament\Widgets\AttendanceSectionWidget::class,
             \App\Filament\Widgets\AttendanceDailyChartWidget::class,
-            \App\Filament\Widgets\TestLevelsDistributionChartWidget::class,
-            \App\Filament\Widgets\TopReasonsTableWidget::class,
-            \App\Filament\Widgets\MonthlyTestScoresWidget::class,
             \App\Filament\Widgets\LowAttendanceHalaqahsWidget::class,
-            \App\Filament\Widgets\VisitScoresComparisonWidget::class,
             \App\Filament\Widgets\TopAbsentTeachersWidget::class,
+            \App\Filament\Widgets\TopReasonsTableWidget::class,
+
+            // الاختبارات
+            \App\Filament\Widgets\TestsSectionWidget::class,
+            \App\Filament\Widgets\TestLevelsDistributionChartWidget::class,
+            \App\Filament\Widgets\MonthlyTestScoresWidget::class,
+
+            // الإشراف التربوي
+            \App\Filament\Widgets\SupervisionSectionWidget::class,
+            \App\Filament\Widgets\SupervisionLevelDistributionWidget::class,
+            \App\Filament\Widgets\SupervisionAvgScoreByTeacherWidget::class,
+            \App\Filament\Widgets\VisitScoresComparisonWidget::class,
         ];
     }
 

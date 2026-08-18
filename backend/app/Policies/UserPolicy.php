@@ -43,13 +43,15 @@ class UserPolicy
     /**
      * صلاحية تعديل مستخدم.
      *
-     * Arabic: SuperAdmin يمكنه التعديل على الجميع. Admin لا يعدّل حسابات SuperAdmin/Admin.
-     * EN: SuperAdmin can update anyone; Admin cannot update SuperAdmin/Admin accounts.
+     * Arabic: SuperAdmin يقرأ كل شيء لكنه يعدّل حسابات Admin فقط — لا يعدّل المعلمين
+     * ولا المختبِرين ولا المشرفين (هؤلاء يديرهم Admin ضمن نطاقه).
+     * Admin لا يعدّل حسابات SuperAdmin/Admin.
+     * EN: SuperAdmin may update Admin accounts only; Admin cannot update SuperAdmin/Admin accounts.
      */
     public function update(User $authUser, User $targetUser): bool
     {
         if ($authUser->hasRole('SuperAdmin')) {
-            return true;
+            return $targetUser->hasRole('Admin');
         }
 
         if ($authUser->hasRole('Admin')) {
@@ -62,14 +64,16 @@ class UserPolicy
     /**
      * صلاحية حذف مستخدم.
      *
-     * Arabic: SuperAdmin لا يحذف حسابه الحالي لتجنب قفل لوحة الإدارة.
-     * EN: SuperAdmin cannot delete self; Admin cannot delete high-privilege accounts.
+     * Arabic: SuperAdmin يحذف حسابات Admin فقط، ولا يحذف حسابه الحالي لتجنب قفل اللوحة.
+     * Admin لا يحذف حسابات SuperAdmin/Admin.
+     * EN: SuperAdmin may delete Admin accounts only (never self); Admin cannot delete high-privilege accounts.
      */
     public function delete(User $authUser, User $targetUser): bool
     {
         if ($authUser->hasRole('SuperAdmin')) {
             // منع حذف الحساب الحالي لتجنب قفل لوحة الإدارة بالخطأ
-            return $authUser->id !== $targetUser->id;
+            return $authUser->id !== $targetUser->id
+                && $targetUser->hasRole('Admin');
         }
 
         if ($authUser->hasRole('Admin')) {

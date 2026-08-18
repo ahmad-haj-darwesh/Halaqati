@@ -270,5 +270,34 @@ class DashboardKpiService
         }
         return \App\Models\Halaqah::whereIn('center_id', $centerIds)->pluck('id')->map(fn ($v) => (int) $v);
     }
+
+    /**
+     * مراكز النطاق المحدد — واجهة عامة لاستخدام الودجات.
+     *
+     * Arabic: تتيح لودجات لوحة المؤشرات تطبيق نفس منطق النطاق والصلاحيات
+     * المستخدم في حساب الـ KPIs، بدل تكراره في كل ودجة.
+     * EN: Public accessor so dashboard widgets reuse the same scope/permission logic.
+     *
+     * @return Collection<int,int>
+     */
+    public function centerIdsForScope(\App\Models\User $user, string $scopeType, ?int $scopeId): Collection
+    {
+        return $this->resolveCenterIdsForScope($user, $scopeType, $scopeId);
+    }
+
+    /**
+     * حلقات النطاق المحدد — واجهة عامة لاستخدام الودجات.
+     * EN: Public accessor for scoped halaqah IDs.
+     *
+     * @return Collection<int,int>
+     */
+    public function halaqahIdsForScope(\App\Models\User $user, string $scopeType, ?int $scopeId): Collection
+    {
+        return $this->resolveHalaqahIdsForScope(
+            $this->resolveCenterIdsForScope($user, $scopeType, $scopeId),
+            $scopeType,
+            $scopeId,
+        );
+    }
 }
 
