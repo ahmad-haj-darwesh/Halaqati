@@ -44,8 +44,8 @@ class MonthlyTestScoresWidget extends ChartWidget
                 [
                     'label' => 'متوسط الدرجات',
                     'data' => $data,
-                    'borderColor' => '#2563EB',
-                    'backgroundColor' => 'rgba(37,99,235,0.1)',
+                    'borderColor' => '#0F6B4F',
+                    'backgroundColor' => 'rgba(15,107,79,0.10)',
                     'tension' => 0.4,
                     'fill' => true,
                 ],

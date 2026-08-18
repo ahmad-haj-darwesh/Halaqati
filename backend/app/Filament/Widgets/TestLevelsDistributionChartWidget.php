@@ -57,7 +57,7 @@ class TestLevelsDistributionChartWidget extends ChartWidget
                         (int) ($levels['acceptable'] ?? 0),
                         (int) ($levels['weak'] ?? 0),
                     ],
-                    'backgroundColor' => ['#16A34A', '#22C55E', '#F59E0B', '#DC2626'],
+                    'backgroundColor' => ['#0F6B4F', '#2E9B76', '#C08A2E', '#B4462F'],
                 ],
             ],
         ];

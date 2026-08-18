@@ -46,13 +46,14 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            // الاتجاه البصري "نُور": أخضر عميق وذهبي على خلفية عاجية دافئة.
             ->colors([
-                'primary' => Color::hex('#2563EB'),
-                'gray' => Color::hex('#5A7A9E'),
-                'info' => Color::hex('#0284C7'),
-                'success' => Color::hex('#059669'),
-                'warning' => Color::hex('#D97706'),
-                'danger' => Color::hex('#EF4444'),
+                'primary' => Color::hex('#0F6B4F'),
+                'gray' => Color::hex('#6C7F72'),
+                'info' => Color::hex('#20647A'),
+                'success' => Color::hex('#137C4E'),
+                'warning' => Color::hex('#C08A2E'),
+                'danger' => Color::hex('#B4462F'),
             ])
             ->font('Tajawal', null, GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/admin/theme.css')

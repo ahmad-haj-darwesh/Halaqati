@@ -7,58 +7,80 @@
    LIGHT MODE TOKENS
    ================================================ */
 :root {
-    --bg-page:        #F0F6FF;
-    --bg-card:        #FFFFFF;
-    --bg-sidebar:     #FFFFFF;
-    --bg-topbar:      #FFFFFF;
-    --bg-input:       #F0F6FF;
-    --bg-hover:       #EFF6FF;
+    --bg-page:        #F5F2E9;
+    --bg-card:        #FFFDF8;
+    --bg-sidebar:     #0C2F24;
+    --bg-topbar:      #FFFDF8;
+    --bg-input:       #FFFDF8;
+    --bg-hover:       #EFEADC;
 
-    --border-default: #E2ECF8;
-    --border-input:   #BFDBFE;
-    --border-outline: #93C5FD;
+    --border-default: #DFD8C4;
+    --border-input:   #DFD8C4;
+    --border-outline: #0F6B4F;
 
-    --primary:        #2563EB;
-    --primary-dark:   #1D4ED8;
-    --primary-light:  #EFF6FF;
+    --primary:        #0F6B4F;
+    --primary-dark:   #0B5540;
+    --primary-light:  #E4EEE8;
 
-    --text-heading:   #0F2A52;
-    --text-body:      #1B3F7A;
-    --text-muted:     #5A7A9E;
-    --text-hint:      #93B8D8;
-    --text-label:     #A0B8D8;
+    --accent:         #C08A2E;
+    --accent-soft:    #F6EEDC;
+    --accent-ink:     #8A6220;
 
-    --shadow-btn:     rgba(37, 99, 235, 0.32);
-    --shadow-card:    rgba(37, 99, 235, 0.07);
+    --sidebar-item:     #C3D4C9;
+    --sidebar-label:    #6E8C7C;
+    --sidebar-divider:  #1B4436;
+    --sidebar-brand:    #F1F6F2;
+    --sidebar-hover:    #14402F;
+
+    --text-heading:   #123A2E;
+    --text-body:      #123A2E;
+    --text-muted:     #6C7F72;
+    --text-hint:      #94A79A;
+    --text-label:     #94A79A;
+
+    --focus-ring:     rgba(15, 107, 79, 0.16);
+    --shadow-btn:     rgba(15, 107, 79, 0.28);
+    --shadow-card:    rgba(15, 63, 49, 0.08);
 }
 
 /* ================================================
    DARK MODE TOKENS
    ================================================ */
 .dark {
-    --bg-page:        #0A1628;
-    --bg-card:        #0F1F38;
-    --bg-sidebar:     #0F1F38;
-    --bg-topbar:      #0F1F38;
-    --bg-input:       #0A1628;
-    --bg-hover:       #152035;
+    --bg-page:        #101C17;
+    --bg-card:        #16261F;
+    --bg-sidebar:     #08201A;
+    --bg-topbar:      #16261F;
+    --bg-input:       #101C17;
+    --bg-hover:       #1C3129;
 
-    --border-default: #1E3354;
-    --border-input:   #1E3A6E;
-    --border-outline: #1E3A6E;
+    --border-default: #2B4238;
+    --border-input:   #2B4238;
+    --border-outline: #2E9B76;
 
-    --primary:        #2563EB;
-    --primary-dark:   #1D4ED8;
-    --primary-light:  #0C1E40;
+    --primary:        #2E9B76;
+    --primary-dark:   #37B489;
+    --primary-light:  #14342A;
 
-    --text-heading:   #E2F0FF;
-    --text-body:      #93C5FD;
-    --text-muted:     #4A6FA5;
-    --text-hint:      #2D4A6E;
-    --text-label:     #2D4A6E;
+    --accent:         #D9A648;
+    --accent-soft:    #2A2415;
+    --accent-ink:     #E6C384;
 
-    --shadow-btn:     rgba(29, 78, 216, 0.45);
-    --shadow-card:    rgba(0, 0, 0, 0.25);
+    --sidebar-item:     #A9BFB1;
+    --sidebar-label:    #5E7A6A;
+    --sidebar-divider:  #143329;
+    --sidebar-brand:    #E8EFE9;
+    --sidebar-hover:    #102C23;
+
+    --text-heading:   #E8EFE9;
+    --text-body:      #D3E0D7;
+    --text-muted:     #93A79A;
+    --text-hint:      #6E8478;
+    --text-label:     #6E8478;
+
+    --focus-ring:     rgba(46, 155, 118, 0.22);
+    --shadow-btn:     rgba(46, 155, 118, 0.35);
+    --shadow-card:    rgba(0, 0, 0, 0.28);
 }
 
 /* ================================================
@@ -90,46 +112,60 @@ html {
    ================================================ */
 .fi-sidebar {
     background-color: var(--bg-sidebar) !important;
-    border-inline-start: 1px solid var(--border-default) !important;
+    border-inline-start: none !important;
     border-inline-end: none !important;
     box-shadow: none !important;
     width: 260px !important;
 }
 
+.fi-sidebar-nav {
+    background-color: var(--bg-sidebar) !important;
+}
+
 .fi-sidebar-header {
     background-color: var(--bg-sidebar) !important;
-    border-bottom: 1px solid var(--border-default) !important;
+    border-bottom: 1px solid var(--sidebar-divider) !important;
     padding: 18px 20px !important;
     height: 72px !important;
     display: flex !important;
     align-items: center !important;
+    box-shadow: none !important;
 }
 
 .fi-brand-name,
-.fi-logo span {
+.fi-logo span,
+.fi-sidebar-header .fi-logo {
     font-size: 13px !important;
     font-weight: 700 !important;
-    color: var(--primary) !important;
+    color: var(--sidebar-brand) !important;
     line-height: 1.4 !important;
 }
 
 .fi-sidebar-group-label {
     font-size: 10px !important;
     font-weight: 700 !important;
-    color: var(--text-label) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
-    padding: 10px 20px 4px !important;
+    color: var(--sidebar-label) !important;
+    text-transform: none !important;
+    letter-spacing: 0.03em !important;
+    padding: 12px 20px 4px !important;
+}
+
+/* فاصل خفيف قبل كل مجموعة في السايدبار */
+.fi-sidebar-group + .fi-sidebar-group {
+    border-top: 1px solid var(--sidebar-divider) !important;
+    margin-top: 8px !important;
+    padding-top: 4px !important;
 }
 
 .fi-sidebar-item-button {
+    position: relative !important;
     margin: 1px 8px !important;
     padding: 9px 16px !important;
     border-radius: 10px !important;
     width: calc(100% - 16px) !important;
     font-size: 13px !important;
     font-weight: 400 !important;
-    color: var(--text-muted) !important;
+    color: var(--sidebar-item) !important;
     transition: background 0.15s ease, color 0.15s ease !important;
     display: flex !important;
     align-items: center !important;
@@ -137,32 +173,91 @@ html {
 }
 
 .fi-sidebar-item-button:hover {
-    background-color: var(--bg-hover) !important;
-    color: var(--text-body) !important;
+    background-color: var(--sidebar-hover) !important;
+    color: var(--sidebar-brand) !important;
 }
 
 .fi-sidebar-item-button:hover svg {
-    color: var(--primary) !important;
+    color: var(--accent) !important;
 }
 
-.fi-sidebar-item-button.fi-active,
-.fi-sidebar-item-button[aria-current='page'] {
-    background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    box-shadow: 0 4px 12px var(--shadow-btn) !important;
+/* ملاحظة: Filament يضع fi-active على العنصر الأب (.fi-sidebar-item) لا على الزر */
+.fi-sidebar-item.fi-active > .fi-sidebar-item-button,
+.fi-sidebar-item-active > .fi-sidebar-item-button {
+    background: var(--primary) !important;
+    color: #FFFDF8 !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
 }
 
-.fi-sidebar-item-button.fi-active svg,
-.fi-sidebar-item-button[aria-current='page'] svg {
-    color: #ffffff !important;
+/* شريط ذهبي على الحافة اليمنى للعنصر النشط (RTL) */
+.fi-sidebar-item.fi-active > .fi-sidebar-item-button::before,
+.fi-sidebar-item-active > .fi-sidebar-item-button::before {
+    content: '' !important;
+    position: absolute !important;
+    inset-inline-start: auto !important;
+    inset-inline-end: 0 !important;
+    top: 7px !important;
+    bottom: 7px !important;
+    width: 3px !important;
+    border-radius: 3px !important;
+    background: var(--accent) !important;
 }
 
-.fi-sidebar-item-button:not(.fi-active) svg,
-.fi-sidebar-item-button:not([aria-current='page']) svg {
-    color: var(--text-muted) !important;
-    width: 16px !important;
-    height: 16px !important;
+.fi-sidebar-item.fi-active .fi-sidebar-item-label,
+.fi-sidebar-item-active .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active .fi-sidebar-item-icon,
+.fi-sidebar-item-active .fi-sidebar-item-icon,
+.fi-sidebar-item.fi-active > .fi-sidebar-item-button svg,
+.fi-sidebar-item-active > .fi-sidebar-item-button svg {
+    color: #FFFDF8 !important;
+    font-weight: 700 !important;
+}
+
+/* العناصر غير النشطة على خلفية السايدبار الداكنة */
+.fi-sidebar-item:not(.fi-active) .fi-sidebar-item-label {
+    color: var(--sidebar-item) !important;
+    font-weight: 400 !important;
+}
+
+.fi-sidebar-item:not(.fi-active) .fi-sidebar-item-icon,
+.fi-sidebar-item:not(.fi-active) .fi-sidebar-item-button svg {
+    color: var(--sidebar-item) !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.fi-sidebar-item:not(.fi-active) > .fi-sidebar-item-button:hover .fi-sidebar-item-label {
+    color: var(--sidebar-brand) !important;
+}
+
+.fi-sidebar-item:not(.fi-active) > .fi-sidebar-item-button:hover .fi-sidebar-item-icon {
+    color: var(--accent) !important;
+}
+
+/* إلغاء خلفيات Tailwind الرمادية الفاتحة داخل السايدبار الداكن */
+.fi-sidebar .fi-sidebar-item-button.bg-gray-100,
+.fi-sidebar .fi-sidebar-item-button:hover,
+.fi-sidebar .fi-sidebar-item-button:focus-visible {
+    background-color: var(--sidebar-hover) !important;
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-button:hover,
+.fi-sidebar-item-active > .fi-sidebar-item-button:hover {
+    background-color: var(--primary-dark) !important;
+}
+
+/* عناوين المجموعات وأزرار طيّها */
+.fi-sidebar-group-collapse-button svg,
+.fi-sidebar-group-label {
+    color: var(--sidebar-label) !important;
+}
+
+/* شارة العدّاد بجانب عنصر السايدبار */
+.fi-sidebar-item-badge {
+    background-color: var(--accent) !important;
+    color: #0C2F24 !important;
+    font-weight: 700 !important;
 }
 
 /* ================================================
@@ -247,12 +342,24 @@ html {
    STATS WIDGET
    ================================================ */
 .fi-wi-stats-overview-stat {
+    position: relative !important;
     background-color: var(--bg-card) !important;
     border: 1px solid var(--border-default) !important;
     border-radius: 14px !important;
     padding: 18px 20px !important;
     box-shadow: 0 2px 12px var(--shadow-card) !important;
     transition: box-shadow 0.2s ease !important;
+    overflow: hidden !important;
+}
+
+/* اللمسة الزخرفية: خيط ذهبي على حافة بطاقة المؤشر العليا فقط */
+.fi-wi-stats-overview-stat::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    inset-inline: 0 !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent) !important;
 }
 
 .fi-wi-stats-overview-stat:hover {
@@ -337,8 +444,8 @@ html {
    BADGES
    ================================================ */
 .fi-badge-color-success {
-    background-color: #dcfce7 !important;
-    color: #166534 !important;
+    background-color: #DFEDE4 !important;
+    color: #0E5637 !important;
     border-radius: 20px !important;
     padding: 3px 12px !important;
     font-size: 11px !important;
@@ -346,13 +453,13 @@ html {
     border: none !important;
 }
 .dark .fi-badge-color-success {
-    background-color: #052e16 !important;
-    color: #4ade80 !important;
+    background-color: #12352A !important;
+    color: #5FCB9E !important;
 }
 
 .fi-badge-color-warning {
-    background-color: #fef9c3 !important;
-    color: #854d0e !important;
+    background-color: #F6EEDC !important;
+    color: #8A6220 !important;
     border-radius: 20px !important;
     padding: 3px 12px !important;
     font-size: 11px !important;
@@ -360,13 +467,13 @@ html {
     border: none !important;
 }
 .dark .fi-badge-color-warning {
-    background-color: #1c1208 !important;
-    color: #fcd34d !important;
+    background-color: #2A2415 !important;
+    color: #E6C384 !important;
 }
 
 .fi-badge-color-danger {
-    background-color: #fee2e2 !important;
-    color: #991b1b !important;
+    background-color: #F7E4DF !important;
+    color: #8E3524 !important;
     border-radius: 20px !important;
     padding: 3px 12px !important;
     font-size: 11px !important;
@@ -374,14 +481,14 @@ html {
     border: none !important;
 }
 .dark .fi-badge-color-danger {
-    background-color: #1f0a0a !important;
-    color: #f87171 !important;
+    background-color: #35201B !important;
+    color: #E0917C !important;
 }
 
 .fi-badge-color-primary,
 .fi-badge-color-info {
-    background-color: #dbeafe !important;
-    color: #1e40af !important;
+    background-color: #E4EEE8 !important;
+    color: #0F6B4F !important;
     border-radius: 20px !important;
     padding: 3px 12px !important;
     font-size: 11px !important;
@@ -390,13 +497,13 @@ html {
 }
 .dark .fi-badge-color-primary,
 .dark .fi-badge-color-info {
-    background-color: #0c1e40 !important;
-    color: #60a5fa !important;
+    background-color: #14342A !important;
+    color: #5FCB9E !important;
 }
 
 .fi-badge-color-gray {
-    background-color: #f1f5f9 !important;
-    color: #475569 !important;
+    background-color: #EFEADC !important;
+    color: #6C7F72 !important;
     border-radius: 20px !important;
     padding: 3px 12px !important;
     font-size: 11px !important;
@@ -404,8 +511,8 @@ html {
     border: none !important;
 }
 .dark .fi-badge-color-gray {
-    background-color: #1e293b !important;
-    color: #94a3b8 !important;
+    background-color: #1C3129 !important;
+    color: #93A79A !important;
 }
 
 /* ================================================
@@ -427,13 +534,13 @@ html {
 }
 
 .fi-btn-color-primary {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
     color: #ffffff !important;
     border: none !important;
     box-shadow: 0 4px 12px var(--shadow-btn) !important;
 }
 .fi-btn-color-primary:hover {
-    background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-dark)) !important;
     box-shadow: 0 6px 16px var(--shadow-btn) !important;
 }
 
@@ -449,27 +556,27 @@ html {
 }
 
 .fi-btn-color-danger {
-    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    background: linear-gradient(135deg, #B4462F, #93361F) !important;
     color: #ffffff !important;
     border: none !important;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.30) !important;
+    box-shadow: 0 4px 12px rgba(180, 70, 47, 0.28) !important;
 }
 .fi-btn-color-danger:hover {
-    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.40) !important;
+    box-shadow: 0 6px 16px rgba(180, 70, 47, 0.38) !important;
 }
 
 .fi-btn-color-success {
-    background: linear-gradient(135deg, #059669, #047857) !important;
+    background: linear-gradient(135deg, #137C4E, #0E5F3B) !important;
     color: #ffffff !important;
     border: none !important;
-    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.28) !important;
+    box-shadow: 0 4px 12px rgba(19, 124, 78, 0.28) !important;
 }
 
 .fi-btn-color-warning {
-    background: linear-gradient(135deg, #d97706, #b45309) !important;
+    background: linear-gradient(135deg, #C08A2E, #9C6E22) !important;
     color: #ffffff !important;
     border: none !important;
-    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.28) !important;
+    box-shadow: 0 4px 12px rgba(192, 138, 46, 0.28) !important;
 }
 
 /* ================================================
@@ -509,7 +616,7 @@ html {
 .fi-select-input:focus,
 .fi-textarea:focus {
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14) !important;
+    box-shadow: 0 0 0 3px var(--focus-ring) !important;
     background-color: var(--bg-card) !important;
     outline: none !important;
 }
@@ -530,7 +637,7 @@ html {
 
 .fi-fo-field-wrp-error-message {
     font-size: 12px !important;
-    color: #ef4444 !important;
+    color: #B4462F !important;
     margin-top: 4px !important;
 }
 
@@ -549,7 +656,7 @@ html {
 }
 .fi-ta-search-input:focus {
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14) !important;
+    box-shadow: 0 0 0 3px var(--focus-ring) !important;
     outline: none !important;
 }
 
@@ -560,7 +667,7 @@ html {
     background-color: var(--bg-card) !important;
     border: 1px solid var(--border-default) !important;
     border-radius: 18px !important;
-    box-shadow: 0 20px 60px rgba(15, 42, 82, 0.18) !important;
+    box-shadow: 0 20px 60px rgba(15, 63, 49, 0.22) !important;
 }
 
 .fi-modal-header {
@@ -637,7 +744,7 @@ html {
 }
 
 .fi-pagination-item-btn[aria-current='page'] {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
     border-color: transparent !important;
     color: #ffffff !important;
     box-shadow: 0 3px 8px var(--shadow-btn) !important;
@@ -677,27 +784,27 @@ html {
 }
 
 .fi-alert-color-success {
-    background-color: #dcfce7 !important;
-    border-color: #bbf7d0 !important;
-    color: #166534 !important;
+    background-color: #DFEDE4 !important;
+    border-color: #B9D8C8 !important;
+    color: #0E5637 !important;
 }
 
 .fi-alert-color-danger {
-    background-color: #fee2e2 !important;
-    border-color: #fecaca !important;
-    color: #991b1b !important;
+    background-color: #F7E4DF !important;
+    border-color: #E4C3B9 !important;
+    color: #8E3524 !important;
 }
 
 .fi-alert-color-warning {
-    background-color: #fef9c3 !important;
-    border-color: #fef08a !important;
-    color: #854d0e !important;
+    background-color: #F6EEDC !important;
+    border-color: #E4D2AE !important;
+    color: #8A6220 !important;
 }
 
 .fi-alert-color-info {
-    background-color: #dbeafe !important;
-    border-color: #bfdbfe !important;
-    color: #1e40af !important;
+    background-color: #E4EEE8 !important;
+    border-color: #CBDCD2 !important;
+    color: #0F6B4F !important;
 }
 
 /* ================================================
@@ -716,4 +823,38 @@ html {
 }
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
+}
+
+/* ================================================
+   FORM CONTROLS — تجاوز ألوان @tailwindcss/forms الافتراضية (أزرق)
+   ================================================ */
+[type='checkbox'],
+[type='radio'] {
+    color: var(--primary) !important;
+    border-color: var(--border-input) !important;
+}
+
+[type='checkbox']:focus,
+[type='radio']:focus,
+[type='text']:focus,
+[type='email']:focus,
+[type='password']:focus,
+[type='number']:focus,
+[type='date']:focus,
+[type='datetime-local']:focus,
+[type='search']:focus,
+[type='tel']:focus,
+select:focus,
+textarea:focus,
+.fi-input:focus,
+.fi-select-input:focus {
+    border-color: var(--primary) !important;
+    --tw-ring-color: var(--focus-ring) !important;
+    box-shadow: 0 0 0 3px var(--focus-ring) !important;
+    outline: none !important;
+}
+
+.fi-fo-field-wrp-label,
+.fi-fo-field-wrp-hint {
+    color: var(--text-muted) !important;
 }

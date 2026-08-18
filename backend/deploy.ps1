@@ -59,7 +59,7 @@ Copy-Item -Path "routes" -Destination "$deployDir/routes" -Recurse
 Write-Host "  ✅ routes/" -ForegroundColor Gray
 
 # نسخ مجلد lang — بدونه يعيد Laravel مفاتيح الترجمة خاماً مثل validation.required
-Copy-Item -Path "lang" -Destination "/lang" -Recurse
+Copy-Item -Path "lang" -Destination "$deployDir/lang" -Recurse
 Write-Host "  ✅ lang/" -ForegroundColor Gray
 
 # نسخ مجلد storage

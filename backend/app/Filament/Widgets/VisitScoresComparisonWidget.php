@@ -59,19 +59,19 @@ class VisitScoresComparisonWidget extends ChartWidget
                 [
                     'label' => 'مهارة الإعطاء',
                     'data' => $teaching,
-                    'borderColor' => '#2563EB',
+                    'borderColor' => '#0F6B4F',
                     'tension' => 0.4,
                 ],
                 [
                     'label' => 'الالتزام بالخطة',
                     'data' => $plan,
-                    'borderColor' => '#059669',
+                    'borderColor' => '#C08A2E',
                     'tension' => 0.4,
                 ],
                 [
                     'label' => 'تفاعل الطلاب',
                     'data' => $engagement,
-                    'borderColor' => '#D97706',
+                    'borderColor' => '#7FB79F',
                     'tension' => 0.4,
                 ],
             ],
