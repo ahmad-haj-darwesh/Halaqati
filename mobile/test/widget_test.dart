@@ -58,6 +58,11 @@ class _FakeTokenStorage implements TokenStorage {
 void main() {
   setUp(() async {
     await sl.reset();
+    // الصفحات صارت تحصل على المستودعات من الحاوية (لتعمل طبقة الكاش والطابور)،
+    // فلا بد من تهيئتها كما يفعل main، ثم استبدال التخزين الآمن بتخزين في الذاكرة
+    // حتى لا يلمس الاختبار قنوات المنصة.
+    initDependencies();
+    await sl.unregister<TokenStorage>();
     sl.registerLazySingleton<TokenStorage>(_FakeTokenStorage.new);
   });
 

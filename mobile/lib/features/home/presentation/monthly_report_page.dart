@@ -1,10 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
+import '../../../injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/app_error_view.dart' show AppErrorView, AppLoadingView;
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/teacher_daily_repository.dart';
 import 'bloc/monthly_report_cubit.dart';
 
@@ -16,7 +15,7 @@ class MonthlyReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MonthlyReportCubit(
-        repository ?? TeacherDailyRepositoryImpl(apiClient: ApiClient(tokenStorage: SecureTokenStorage())),
+        repository ?? sl<TeacherDailyRepository>(),
       )..loadReport('${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}'),
       child: const _MonthlyReportView(),
     );

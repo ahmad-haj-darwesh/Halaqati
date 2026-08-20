@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../core/constants/api_constants.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/app_error_view.dart' show AppErrorView, AppLoadingView;
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/teacher_student_profile_repository.dart';
 import 'bloc/student_profile_cubit.dart';
 
@@ -19,7 +18,7 @@ class StudentProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => StudentProfileCubit(
-        TeacherStudentProfileRepositoryImpl(apiClient: ApiClient(tokenStorage: SecureTokenStorage())),
+        sl<TeacherStudentProfileRepository>(),
         studentId,
       )..load(),
       child: const _StudentProfileView(),

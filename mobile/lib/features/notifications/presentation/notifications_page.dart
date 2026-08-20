@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import 'bloc/notifications_cubit.dart'; // تأكد من مطابقة المسار للكيوبت الذي أنشأناه
 
 class NotificationsPage extends StatelessWidget {
@@ -12,7 +12,7 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
+        final apiClient = sl<ApiClient>();
         return NotificationsCubit(apiClient)..loadInitial();
       },
       child: const _NotificationsView(),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/examiner_models.dart';
 import '../data/examiner_repository.dart';
 import '../widgets/student_detail_bottom_sheet.dart';
@@ -19,8 +18,7 @@ class ExamTestStepperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = ExaminerRepositoryImpl(apiClient: apiClient);
+        final repo = sl<ExaminerRepository>();
         return ExamTestStepperCubit(repo)..loadTests();
       },
       child: const _ExamTestStepperView(),
@@ -74,8 +72,7 @@ class _ExamTestStepperViewState extends State<_ExamTestStepperView> {
   ) async {
     final sid = (row['student_id'] as num).toInt();
     final cubit = context.read<ExamTestStepperCubit>();
-    final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-    final repo = ExaminerRepositoryImpl(apiClient: apiClient);
+    final repo = sl<ExaminerRepository>();
 
     await showExaminerStudentDetailSheet(
       context: context,

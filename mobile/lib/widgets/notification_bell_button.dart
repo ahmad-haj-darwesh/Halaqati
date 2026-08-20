@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import '../injection_container.dart';
 
 import '../core/constants/api_constants.dart';
 import '../features/notifications/presentation/notifications_page.dart';
 import '../services/api/api_client.dart';
-import '../storage/token_storage.dart';
 
 /// أيقونة جرس في الـ AppBar مع شارة بعدد الإشعارات غير المقروءة.
 ///
@@ -25,7 +25,7 @@ class _NotificationBellButtonState extends State<NotificationBellButton> {
   @override
   void initState() {
     super.initState();
-    _api = ApiClient(tokenStorage: SecureTokenStorage());
+    _api = sl<ApiClient>();
     _fetch();
   }
 

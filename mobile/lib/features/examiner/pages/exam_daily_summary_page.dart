@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/examiner_models.dart';
 import '../data/examiner_repository.dart';
 import '../presentation/bloc/exam_daily_summary_cubit.dart';
@@ -16,8 +15,7 @@ class ExamDailySummaryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = ExaminerRepositoryImpl(apiClient: apiClient);
+        final repo = sl<ExaminerRepository>();
         return ExamDailySummaryCubit(repo)..loadSummary();
       },
       child: const _ExamDailySummaryView(),

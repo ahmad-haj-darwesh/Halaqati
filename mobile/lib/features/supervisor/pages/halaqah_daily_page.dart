@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/supervisor_models.dart';
 import '../data/supervisor_repository.dart';
 import '../presentation/bloc/halaqah_daily_cubit.dart'; // مسار الكيوبت
@@ -25,8 +24,7 @@ class HalaqahDailyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = SupervisorRepositoryImpl(apiClient: apiClient);
+        final repo = sl<SupervisorRepository>();
         return HalaqahDailyCubit(repo: repo, halaqahId: halaqahId)..loadDailyData();
       },
       child: _HalaqahDailyView(halaqahName: halaqahName),

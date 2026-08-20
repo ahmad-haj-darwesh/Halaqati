@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import '../../../core/utils/arabic_plural.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../../../widgets/notification_bell_button.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../auth/presentation/login_page.dart';
@@ -25,8 +24,7 @@ class SupervisorHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = SupervisorRepositoryImpl(apiClient: apiClient);
+        final repo = sl<SupervisorRepository>();
         return SupervisorHomeCubit(repo)..loadDashboard();
       },
       child: const _SupervisorHomeView(),
@@ -60,8 +58,7 @@ class _SupervisorHomeView extends StatelessWidget {
     
     if (confirmed != true || !context.mounted) return;
     
-    final storage = SecureTokenStorage();
-    final auth = AuthRepository(apiClient: ApiClient(tokenStorage: storage), tokenStorage: storage);
+    final auth = sl<AuthRepository>();
     await auth.logout();
     
     if (!context.mounted) return;

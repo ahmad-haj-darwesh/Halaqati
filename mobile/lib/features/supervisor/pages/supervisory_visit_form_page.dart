@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/supervisor_repository.dart';
 import '../presentation/bloc/supervisory_visit_form_cubit.dart'; // مسار الكيوبت
 
@@ -19,8 +18,7 @@ class SupervisoryVisitFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = SupervisorRepositoryImpl(apiClient: apiClient);
+        final repo = sl<SupervisorRepository>();
         return SupervisoryVisitFormCubit(repo)
           ..loadMeta(presetTeacherUserId: presetTeacherUserId);
       },

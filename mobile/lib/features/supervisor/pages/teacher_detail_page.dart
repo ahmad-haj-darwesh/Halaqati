@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/api_constants.dart';
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/supervisor_models.dart';
 import '../data/supervisor_repository.dart';
 import 'supervisory_visit_form_page.dart';
@@ -26,8 +25,7 @@ class TeacherDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = SupervisorRepositoryImpl(apiClient: apiClient);
+        final repo = sl<SupervisorRepository>();
         return TeacherDetailCubit(repo)..loadDetail(teacherId);
       },
       child: _TeacherDetailView(teacherId: teacherId, teacherName: teacherName),

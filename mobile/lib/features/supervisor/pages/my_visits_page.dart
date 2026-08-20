@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/supervisor_models.dart';
 import '../data/supervisor_repository.dart';
 import 'supervisory_visit_form_page.dart';
@@ -17,8 +16,7 @@ class MyVisitsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = SupervisorRepositoryImpl(apiClient: apiClient);
+        final repo = sl<SupervisorRepository>();
         return MyVisitsCubit(repo)..loadInitial();
       },
       child: const _MyVisitsView(),

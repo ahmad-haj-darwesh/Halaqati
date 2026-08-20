@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -34,9 +35,7 @@ class HomePage extends StatelessWidget {
     // 1. توفير الـ Cubit للشجرة وبدء تحميل البيانات فوراً
     return BlocProvider(
       create: (context) {
-        final storage = SecureTokenStorage();
-        final apiClient = ApiClient(tokenStorage: storage);
-        final repo = TeacherOwnProfileRepositoryImpl(apiClient: apiClient);
+        final repo = sl<TeacherOwnProfileRepository>();
         return TeacherHomeCubit(repo)..loadProfile();
       },
       child: const _HomePageView(),
@@ -80,7 +79,7 @@ class _HomePageView extends StatelessWidget {
   Future<void> _logout(BuildContext context) async {
     final storage = SecureTokenStorage();
     final authRepo = AuthRepository(
-      apiClient: ApiClient(tokenStorage: storage), 
+      apiClient: sl<ApiClient>(), 
       tokenStorage: storage,
     );
     await authRepo.logout();

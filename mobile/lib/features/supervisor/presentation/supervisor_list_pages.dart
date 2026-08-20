@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/supervisor_repository.dart';
 import '../pages/halaqah_daily_page.dart';
 import '../pages/teacher_detail_page.dart';
@@ -102,8 +102,7 @@ class SupervisorCentersListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = SupervisorRepositoryImpl(apiClient: apiClient);
+        final repo = sl<SupervisorRepository>();
         return SupervisorCentersCubit(repo)..load();
       },
       child: BlocBuilder<SupervisorCentersCubit, SupervisorCentersState>(
@@ -142,8 +141,8 @@ class SupervisorHalaqahsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = SupervisorRepositoryImpl(apiClient: apiClient);
+        final apiClient = sl<ApiClient>();
+        final repo = sl<SupervisorRepository>();
         return SupervisorHalaqahsCubit(repo, apiClient)..load();
       },
       child: BlocBuilder<SupervisorHalaqahsCubit, SupervisorHalaqahsState>(
@@ -209,8 +208,7 @@ class SupervisorTeachersListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = SupervisorRepositoryImpl(apiClient: apiClient);
+        final repo = sl<SupervisorRepository>();
         return SupervisorTeachersCubit(repo)..load();
       },
       child: BlocBuilder<SupervisorTeachersCubit, SupervisorTeachersState>(

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import '../../../core/utils/arabic_plural.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/supervisor_models.dart';
 import '../data/supervisor_repository.dart';
 import '../pages/halaqah_daily_page.dart';
@@ -19,8 +18,7 @@ class AttendanceStatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = SupervisorRepositoryImpl(apiClient: apiClient);
+        final repo = sl<SupervisorRepository>();
         return AttendanceStatsCubit(repo)..loadStats();
       },
       child: const _AttendanceStatsView(),

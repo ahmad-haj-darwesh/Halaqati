@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/examiner_repository.dart';
 import 'bloc/examiner_list_cubits.dart'; // مسار الـ Cubits الجديد
 
@@ -100,7 +99,7 @@ class ExaminerTestsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ExaminerTestsCubit(
-        ExaminerRepositoryImpl(apiClient: ApiClient(tokenStorage: SecureTokenStorage())),
+        sl<ExaminerRepository>(),
       )..load(),
       child: BlocBuilder<ExaminerTestsCubit, ExaminerTestsState>(
         builder: (context, state) {
@@ -145,7 +144,7 @@ class ExaminerAssignmentsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ExaminerAssignmentsCubit(
-        ExaminerRepositoryImpl(apiClient: ApiClient(tokenStorage: SecureTokenStorage())),
+        sl<ExaminerRepository>(),
       )..load(),
       child: BlocBuilder<ExaminerAssignmentsCubit, ExaminerAssignmentsState>(
         builder: (context, state) {
@@ -215,7 +214,7 @@ class ExaminerResultsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ExaminerResultsCubit(
-        ExaminerRepositoryImpl(apiClient: ApiClient(tokenStorage: SecureTokenStorage())),
+        sl<ExaminerRepository>(),
       )..load(),
       child: BlocBuilder<ExaminerResultsCubit, ExaminerResultsState>(
         builder: (context, state) {

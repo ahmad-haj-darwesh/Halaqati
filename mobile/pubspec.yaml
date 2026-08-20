@@ -74,7 +74,10 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon.png"
+  image_path: "assets/halaqati_arabic_tajawal.png"
+  # App Store يرفض أيقونات فيها قناة شفافية — تُدمج على خلفية معتمة بدلاً منها.
+  remove_alpha_ios: true
+  background_color_ios: "#0E2A23"
   min_sdk_android: 21 # اختياري لتفادي بعض التحذيرات
 
 # For information on the generic Dart part of this file, see the

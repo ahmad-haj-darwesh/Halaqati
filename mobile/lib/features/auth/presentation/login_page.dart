@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app/role_home.dart';
@@ -17,7 +18,7 @@ class LoginPage extends StatelessWidget {
     return BlocProvider(
       create: (context) {
         final storage = SecureTokenStorage();
-        final apiClient = ApiClient(tokenStorage: storage);
+        final apiClient = sl<ApiClient>();
         final authRepo = AuthRepository(
           apiClient: apiClient,
           tokenStorage: storage,

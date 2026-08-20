@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../auth/presentation/login_page.dart';
 import '../data/examiner_models.dart';
@@ -24,8 +23,7 @@ class ExaminerHomePage extends StatelessWidget {
     // 1. توفير الـ Cubit وبدء تحميل البيانات
     return BlocProvider(
       create: (context) {
-        final apiClient = ApiClient(tokenStorage: SecureTokenStorage());
-        final repo = ExaminerRepositoryImpl(apiClient: apiClient);
+        final repo = sl<ExaminerRepository>();
         return ExaminerHomeCubit(repo)..loadDashboard();
       },
       child: const _ExaminerHomeView(),
@@ -59,8 +57,7 @@ class _ExaminerHomeView extends StatelessWidget {
     
     if (confirmed != true || !context.mounted) return;
     
-    final storage = SecureTokenStorage();
-    final auth = AuthRepository(apiClient: ApiClient(tokenStorage: storage), tokenStorage: storage);
+    final auth = sl<AuthRepository>();
     await auth.logout();
     
     if (!context.mounted) return;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../../injection_container.dart';
 import '../../../core/utils/arabic_plural.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/app_error_view.dart' show AppErrorView, AppLoadingView;
 import '../../../services/api/api_client.dart';
-import '../../../storage/token_storage.dart';
 import '../data/teacher_daily_repository.dart';
 import 'bloc/daily_record_cubit.dart'; // مسار الـ Cubit الجديد
 
@@ -22,7 +22,7 @@ class DailyRecordPage extends StatelessWidget {
       create: (context) {
         final repo = repository ??
             TeacherDailyRepositoryImpl(
-              apiClient: ApiClient(tokenStorage: SecureTokenStorage()),
+              apiClient: sl<ApiClient>(),
             );
         final date = DateTime.now().toIso8601String().substring(0, 10);
         // إنشاء الـ Cubit والبدء بتحميل البيانات فوراً
