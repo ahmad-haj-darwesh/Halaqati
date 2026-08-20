@@ -269,9 +269,14 @@ html {
     box-shadow: none !important;
 }
 
+/* العنصر المرسوم فعلياً هو الـ nav بداخل الشريط، وعليه bg-white/dark:bg-gray-900
+   من Tailwind — واللوحة تعيد تعريف gray فيخرج رمادياً مخالفاً لسطح نُور. */
+.fi-topbar > nav,
 .fi-topbar nav {
     height: 64px !important;
     padding: 0 20px !important;
+    background-color: var(--bg-topbar) !important;
+    box-shadow: none !important;
 }
 
 .fi-page-header-heading,
@@ -897,4 +902,62 @@ textarea:focus,
     height: 1px !important;
     background: linear-gradient(to left, transparent, var(--accent)) !important;
     opacity: .55 !important;
+}
+
+/* ================================================
+   مقارنة تعديلات ملف الطالب (الحالي مقابل المقترح)
+   ================================================ */
+.fi-submission-diff-head,
+.fi-submission-diff-row {
+    display: grid !important;
+    grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 14px !important;
+    align-items: center !important;
+    padding: 10px 14px !important;
+}
+
+.fi-submission-diff-head {
+    background: var(--bg-hover) !important;
+    border-radius: 10px 10px 0 0 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: var(--text-muted) !important;
+}
+
+.fi-submission-diff-row {
+    border-bottom: 1px solid var(--border-default) !important;
+    font-size: 13.5px !important;
+    color: var(--text-body) !important;
+}
+
+.fi-submission-diff-label {
+    font-size: 13px !important;
+    color: var(--text-muted) !important;
+}
+
+/* الصف المتغيّر يُميَّز بالذهبي — لا باللون وحده: يحمل وسم "معدّل" */
+.fi-submission-diff-changed {
+    background: var(--accent-soft) !important;
+}
+
+.fi-submission-diff-changed .fi-submission-diff-proposed {
+    font-weight: 700 !important;
+    color: var(--accent-ink) !important;
+}
+
+.fi-submission-diff-proposed em {
+    font-style: normal !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    border-radius: 999px !important;
+    padding: 2px 8px !important;
+    margin-inline-start: 8px !important;
+    background: var(--accent) !important;
+    color: #FFFDF8 !important;
+}
+
+.fi-submission-diff-empty {
+    padding: 14px !important;
+    font-size: 13px !important;
+    color: var(--text-hint) !important;
 }

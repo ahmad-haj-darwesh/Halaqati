@@ -39,13 +39,17 @@ class TeacherStudentProfileController extends Controller
 
         abort_unless($policy->teacherCanAccessStudent($user, $student), 403);
 
-        $student->load(['pendingProfileSubmission', 'currentEnrollment.halaqah']);
+        $student->load(['pendingProfileSubmission', 'draftProfileSubmission', 'currentEnrollment.halaqah']);
+
+        // ما يراه المعلّم = المعتمد + مسودّته إن وُجدت، أو الطلب المرسل قيد المراجعة.
+        $overlay = $student->draftProfileSubmission ?? $student->pendingProfileSubmission;
 
         return response()->json([
-            'student'            => $this->studentPayload($student),
+            'student'            => $this->studentPayload($student, $overlay),
             'can_edit'           => $policy->teacherCanEditStudentProfile($user, $student),
             'can_submit'         => $policy->teacherCanSubmitStudentProfile($user, $student),
             'pending_submission' => $student->pendingProfileSubmission,
+            'draft'              => $student->draftProfileSubmission,
         ]);
     }
 
@@ -85,22 +89,45 @@ class TeacherStudentProfileController extends Controller
             $newPhotoPath = $this->storeStudentPhotoFromBase64($student, $request->string('photo_base64')->toString());
         }
 
-        if ($newPhotoPath !== null) {
-            if ($student->photo_path && Storage::disk('public')->exists($student->photo_path)) {
-                Storage::disk('public')->delete($student->photo_path);
-            }
-            $validated['photo_path'] = $newPhotoPath;
-        }
-
         unset($validated['photo'], $validated['photo_base64']);
 
-        $student->update($validated);
+        $draft = DB::transaction(function () use ($student, $user, $validated, $newPhotoPath) {
+            $draft = $student->draftProfileSubmission()->lockForUpdate()->first();
 
-        $student->refresh();
+            // الصورة: نحذف صورة المسودّة السابقة فقط — صورة الطالب المعتمدة تبقى
+            // سليمة حتى يعتمد المشرف التعديل.
+            $photoPath = $draft?->photo_path ?? $student->photo_path;
+
+            if ($newPhotoPath !== null) {
+                if ($draft?->photo_path
+                    && $draft->photo_path !== $student->photo_path
+                    && Storage::disk('public')->exists($draft->photo_path)) {
+                    Storage::disk('public')->delete($draft->photo_path);
+                }
+                $photoPath = $newPhotoPath;
+            }
+
+            $attributes = $validated + [
+                'teacher_user_id' => $user->id,
+                'photo_path'      => $photoPath,
+            ];
+
+            if ($draft) {
+                $draft->update($attributes);
+
+                return $draft;
+            }
+
+            return StudentProfileSubmission::create($attributes + [
+                'student_id' => $student->id,
+                'status'     => StudentProfileSubmission::STATUS_DRAFT,
+            ]);
+        });
 
         return response()->json([
-            'message' => 'updated',
-            'student' => $this->studentPayload($student->fresh()),
+            'message' => 'draft_saved',
+            'student' => $this->studentPayload($student->fresh(), $draft),
+            'draft'   => $draft->fresh(),
         ]);
     }
 
@@ -122,21 +149,24 @@ class TeacherStudentProfileController extends Controller
             return response()->json(['message' => 'يوجد طلب قيد المراجعة'], 422);
         }
 
-        DB::transaction(function () use ($student, $user) {
-            StudentProfileSubmission::create([
-                'student_id'        => $student->id,
-                'teacher_user_id'   => $user->id,
-                'status'            => StudentProfileSubmission::STATUS_PENDING,
-                'full_name'         => $student->full_name,
-                'gender'            => $student->gender,
-                'birth_date'        => $student->birth_date,
-                'guardian_name'     => $student->guardian_name,
-                'guardian_phone'    => $student->guardian_phone,
-                'national_id'       => $student->national_id,
-                'notes'             => $student->notes,
-                'photo_path'        => $student->photo_path,
+        $sent = DB::transaction(function () use ($student, $user) {
+            $draft = $student->draftProfileSubmission()->lockForUpdate()->first();
+
+            if (! $draft) {
+                return null;
+            }
+
+            $draft->update([
+                'status'          => StudentProfileSubmission::STATUS_PENDING,
+                'teacher_user_id' => $user->id,
             ]);
+
+            return $draft;
         });
+
+        if (! $sent) {
+            return response()->json(['message' => 'لا توجد تعديلات لإرسالها'], 422);
+        }
 
         $student->load('pendingProfileSubmission');
 
@@ -206,24 +236,27 @@ class TeacherStudentProfileController extends Controller
      *
      * @return array<string, mixed>
      */
-    private function studentPayload(Student $student): array
+    private function studentPayload(Student $student, ?StudentProfileSubmission $overlay = null): array
     {
-        $url = PublicMediaUrl::forStoragePath($student->photo_path);
+        $photoPath = $overlay?->photo_path ?? $student->photo_path;
+        $birthDate = $overlay ? $overlay->birth_date : $student->birth_date;
 
         return [
             'id'                       => $student->id,
-            'full_name'                => $student->full_name,
-            'gender'                   => $student->gender,
-            'birth_date'               => $student->birth_date?->toDateString(),
-            'guardian_name'            => $student->guardian_name,
-            'guardian_phone'           => $student->guardian_phone,
-            'national_id'              => $student->national_id,
-            'notes'                    => $student->notes,
+            'full_name'                => $overlay->full_name ?? $student->full_name,
+            'gender'                   => $overlay->gender ?? $student->gender,
+            'birth_date'               => $birthDate?->toDateString(),
+            'guardian_name'            => $overlay ? $overlay->guardian_name : $student->guardian_name,
+            'guardian_phone'           => $overlay ? $overlay->guardian_phone : $student->guardian_phone,
+            'national_id'              => $overlay ? $overlay->national_id : $student->national_id,
+            'notes'                    => $overlay ? $overlay->notes : $student->notes,
             'is_active'                => $student->is_active,
-            'photo_path'               => $student->photo_path,
-            'photo_url'                => $url,
+            'photo_path'               => $photoPath,
+            'photo_url'                => PublicMediaUrl::forStoragePath($photoPath),
             'profile_locked'           => $student->profile_locked,
             'teacher_may_edit_profile' => $student->teacher_may_edit_profile,
+            /** true عندما تكون القيم المعروضة مقترحة لم تُعتمد بعد. */
+            'has_unapproved_changes'   => $overlay !== null,
         ];
     }
 }

@@ -51,7 +51,9 @@ class UserPolicy
     public function update(User $authUser, User $targetUser): bool
     {
         if ($authUser->hasRole('SuperAdmin')) {
-            return $targetUser->hasRole('Admin');
+            // حسابه الشخصي مستثنى — وإلا تعذّر عليه تغيير اسمه أو كلمة مروره.
+            return $authUser->id === $targetUser->id
+                || $targetUser->hasRole('Admin');
         }
 
         if ($authUser->hasRole('Admin')) {

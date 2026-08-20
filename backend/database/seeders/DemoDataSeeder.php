@@ -437,10 +437,14 @@ class DemoDataSeeder extends Seeder
                 'teacher_user_id' => $teacherId,
                 'visited_at' => $visitedAt,
                 'duration_minutes' => mt_rand(30, 60),
+                // المستويات الأربعة المسموح بها في مخطط `supervisory_visits`.
+                // `needs_improvement` من مفردات التقييم اليومي لا الزيارات، وكان
+                // يكسر قيد CHECK كلما نزلت الدرجة تحت 70.
                 'overall_level' => match (true) {
                     $percent >= 85 => 'excellent',
                     $percent >= 70 => 'good',
-                    default => 'needs_improvement',
+                    $percent >= 55 => 'acceptable',
+                    default => 'weak',
                 },
                 'overall_score' => round($percent, 2),
                 'summary' => 'زيارة ميدانية للحلقة، انضباط جيد والتزام بالخطة.',

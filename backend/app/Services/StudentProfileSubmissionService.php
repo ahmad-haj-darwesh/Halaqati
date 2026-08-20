@@ -30,6 +30,12 @@ class StudentProfileSubmissionService
         DB::transaction(function () use ($submission, $reviewer) {
             $student = $submission->student()->lockForUpdate()->first();
 
+            // الصورة المعتمدة سابقاً لم تعد مستخدمة بعد قبول الصورة الجديدة.
+            $oldPhoto = $student->photo_path;
+            if ($oldPhoto && $oldPhoto !== $submission->photo_path) {
+                $this->deletePhoto($oldPhoto);
+            }
+
             $student->update([
                 'full_name'                => $submission->full_name,
                 'gender'                   => $submission->gender,
@@ -64,11 +70,34 @@ class StudentProfileSubmissionService
      */
     public function reject(StudentProfileSubmission $submission, User $reviewer, ?string $note): void
     {
-        $submission->update([
-            'status'              => StudentProfileSubmission::STATUS_REJECTED,
-            'reviewed_by_user_id' => $reviewer->id,
-            'reviewed_at'         => now(),
-            'reviewer_note'       => $note,
-        ]);
+        DB::transaction(function () use ($submission, $reviewer, $note) {
+            $student = $submission->student()->lockForUpdate()->first();
+
+            // بيانات الطالب لم تُمس أصلاً (التعديلات تبقى في الطلب حتى الاعتماد)،
+            // فيكفي إهمال المقترح وحذف الصورة المرفوعة معه لأنها صارت يتيمة.
+            if ($submission->photo_path
+                && $student
+                && $submission->photo_path !== $student->photo_path) {
+                $this->deletePhoto($submission->photo_path);
+            }
+
+            $submission->update([
+                'status'              => StudentProfileSubmission::STATUS_REJECTED,
+                'reviewed_by_user_id' => $reviewer->id,
+                'reviewed_at'         => now(),
+                'reviewer_note'       => $note,
+            ]);
+        });
+    }
+
+    /**
+     * حذف صورة من قرص public إن وُجدت.
+     * EN: Deletes a stored photo if present.
+     */
+    private function deletePhoto(string $path): void
+    {
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
     }
 }

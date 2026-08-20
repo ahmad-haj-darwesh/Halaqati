@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/utils/arabic_plural.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../services/api/api_client.dart';
@@ -261,7 +262,7 @@ class _HalaqahRow extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                '${h.presentCount} حاضر من ${h.totalRecords} سجل',
+                'حضور مسجَّل: ${h.presentCount} من ${ArCount.records(h.totalRecords)}',
                 style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
               ),
             ],

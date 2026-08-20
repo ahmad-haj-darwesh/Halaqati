@@ -94,4 +94,30 @@ class SuperAdminPolicyTest extends TestCase
 
         $this->assertFalse($this->policy->delete($superAdmin, $teacher));
     }
+public function test_superadmin_can_update_own_account(): void
+    {
+        $superAdmin = User::factory()->create();
+        $superAdmin->assignRole('SuperAdmin');
+
+        $this->assertTrue($this->policy->update($superAdmin, $superAdmin));
+    }
+
+    public function test_superadmin_cannot_delete_own_account(): void
+    {
+        $superAdmin = User::factory()->create();
+        $superAdmin->assignRole('SuperAdmin');
+
+        $this->assertFalse($this->policy->delete($superAdmin, $superAdmin));
+    }
+
+    public function test_superadmin_cannot_update_another_superadmin(): void
+    {
+        $superAdmin = User::factory()->create();
+        $superAdmin->assignRole('SuperAdmin');
+
+        $other = User::factory()->create();
+        $other->assignRole('SuperAdmin');
+
+        $this->assertFalse($this->policy->update($superAdmin, $other));
+    }
 }

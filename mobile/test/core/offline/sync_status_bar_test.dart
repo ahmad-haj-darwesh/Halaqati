@@ -39,7 +39,7 @@ void main() {
   testWidgets('يذكر عدد العمليات المحفوظة عند انقطاع الشبكة', (tester) async {
     await pumpBar(tester, const SyncSnapshot(isOnline: false, pendingCount: 3));
 
-    expect(find.textContaining('3 عملية محفوظة'), findsOneWidget);
+    expect(find.textContaining('3 عمليات محفوظة'), findsOneWidget);
   });
 
   testWidgets('الفشل النهائي يطغى على بقية الحالات', (tester) async {
@@ -49,7 +49,7 @@ void main() {
     );
 
     expect(find.byIcon(Icons.error_outline), findsOneWidget);
-    expect(find.textContaining('2 عملية لم تُقبل'), findsOneWidget);
+    expect(find.textContaining('عمليتان لم تُقبل'), findsOneWidget);
   });
 
   testWidgets('يعرض مؤشر تقدم أثناء المزامنة', (tester) async {

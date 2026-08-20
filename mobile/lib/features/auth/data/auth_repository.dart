@@ -1,6 +1,7 @@
 import '../../../core/constants/api_constants.dart';
 import '../../../core/errors/api_exception.dart';
 import '../../../services/api/api_client.dart';
+import '../../../services/api/response_cache.dart';
 import '../../../storage/token_storage.dart';
 
 /// نتيجة تسجيل الدخول من API.
@@ -84,6 +85,9 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
+    // مستخدم جديد يبدأ بكاش نظيف.
+    ResponseCache.clear();
+
     final fcm = await _tokenStorage.getFcmToken();
     final response = await _apiClient.post(
       ApiConstants.loginEndpoint,
@@ -154,6 +158,8 @@ class AuthRepository {
       // best-effort logout
     } finally {
       await _tokenStorage.deleteToken();
+      // مسح كاش القراءة حتى لا يرى المستخدم التالي بيانات من سبقه.
+      ResponseCache.clear();
     }
   }
 }

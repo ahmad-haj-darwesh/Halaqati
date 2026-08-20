@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import '../../core/constants/api_constants.dart';
 import '../../core/errors/api_exception.dart';
 import '../../storage/token_storage.dart';
+import 'response_cache.dart';
 
 /// عميل HTTP بسيط يعتمد على Dio للتواصل مع Laravel API.
 ///
@@ -40,21 +41,46 @@ class ApiClient {
     _dio.interceptors.add(_AuthInterceptor(_tokenStorage));
   }
 
-  /// تنفيذ طلب GET.
-  /// EN: Perform a GET request.
-  Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  /// تنفيذ طلب GET مع كاش في الذاكرة.
+  ///
+  /// Arabic: يعيد النتيجة المخزّنة فوراً إن كانت صالحة، فلا تُعاد الصفحة تحميلاً
+  /// عند العودة إليها. مرّر `forceRefresh: true` لتجاوز الكاش (سحب للتحديث).
+  /// EN: Serves a fresh cached response when available; `forceRefresh` bypasses it.
+  Future<Response> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    bool forceRefresh = false,
+  }) async {
+    if (!forceRefresh) {
+      final cached = ResponseCache.read(path, queryParameters);
+      if (cached != null) {
+        return Response(
+          requestOptions: RequestOptions(path: path, queryParameters: queryParameters),
+          data: cached,
+          statusCode: 200,
+          extra: const {'fromCache': true},
+        );
+      }
+    }
+
     try {
-      return await _dio.get(path, queryParameters: queryParameters);
+      final response = await _dio.get(path, queryParameters: queryParameters);
+      ResponseCache.write(path, queryParameters, response.data);
+      return response;
     } on DioException catch (e) {
       throw _handleError(e);
     }
   }
 
   /// تنفيذ طلب POST.
-  /// EN: Perform a POST request.
+  ///
+  /// Arabic: أي كتابة تُبطل كاش القراءة لنفس القسم حتى لا يرى المستخدم بيانات قديمة.
+  /// EN: Any write invalidates the read cache for the same section.
   Future<Response> post(String path, {dynamic data}) async {
     try {
-      return await _dio.post(path, data: data);
+      final response = await _dio.post(path, data: data);
+      _invalidateFor(path);
+      return response;
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -64,10 +90,26 @@ class ApiClient {
   /// EN: Perform a PUT request.
   Future<Response> put(String path, {dynamic data}) async {
     try {
-      return await _dio.put(path, data: data);
+      final response = await _dio.put(path, data: data);
+      _invalidateFor(path);
+      return response;
     } on DioException catch (e) {
       throw _handleError(e);
     }
+  }
+
+  /// إبطال الكاش بعد الكتابة.
+  ///
+  /// Arabic: يُبطل القسم الأول من المسار (مثل `/teacher` أو `/supervisor`) لأن
+  /// الكتابة في نقطة واحدة تُغيّر عادةً عدة قراءات ضمن نفس القسم.
+  /// EN: Invalidates the first path segment after a write.
+  void _invalidateFor(String path) {
+    final segments = path.split('/').where((s) => s.isNotEmpty).toList();
+    if (segments.isEmpty) {
+      ResponseCache.clear();
+      return;
+    }
+    ResponseCache.invalidatePrefix('/${segments.first}');
   }
 
   /// تحويل أخطاء Dio إلى `ApiException` برسائل عربية مناسبة.

@@ -8,6 +8,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -64,6 +65,20 @@ class SupervisionAvgScoreByTeacherWidget extends BaseWidget
      *
      * @return array<int, \Filament\Tables\Columns\Column>
      */
+    /**
+     * مفتاح الصف في الجدول.
+     *
+     * Arabic: الاستعلام مُجمّع بـ `GROUP BY teacher_user_id` ولا يختار `id` — ولا
+     * يمكن اختياره لأن MySQL يرفض عموداً غير مُجمَّع في وضع ONLY_FULL_GROUP_BY.
+     * فيعود `getKey()` بـ null بينما يشترط Filament نصاً، فيسقط عرض اللوحة كاملاً
+     * بخطأ 500. ومفتاح التجميع نفسه فريد لكل صف فيصلح بديلاً.
+     * EN: Aggregated query has no `id`; the group key is unique per row.
+     */
+    public function getTableRecordKey(Model $record): string
+    {
+        return (string) $record->teacher_user_id;
+    }
+
     protected function getTableColumns(): array
     {
         return [

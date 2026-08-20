@@ -1,4 +1,5 @@
 import '../../../core/offline/offline_gateway.dart';
+import '../../../core/utils/arabic_plural.dart';
 import 'teacher_daily_repository.dart';
 
 /// مغلّف يضيف الكتابة المؤجلة لمستودع السجل اليومي للمعلم.
@@ -46,7 +47,7 @@ class OfflineTeacherDailyRepository implements TeacherDailyRepository {
         'records': students.map((s) => s.toUpsertRecordJson()).toList(),
       },
       dedupeKey: dailyDedupeKey(date),
-      label: 'سجل يوم $date — ${students.length} طالب',
+      label: 'سجل يوم $date — ${ArCount.students(students.length)}',
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import '../../../core/utils/arabic_plural.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/api_constants.dart';
@@ -152,7 +153,7 @@ class _StudentDetailSheetContentState extends State<_StudentDetailSheetContent> 
         const SizedBox(height: 8),
         Text('معلومات الحفظ', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.grey.shade800)),
         const SizedBox(height: 8),
-        Text('الأجزاء المحفوظة: ${d.memorizedParts} أجزاء', style: const TextStyle(fontSize: 14)),
+        Text('الأجزاء المحفوظة: ${ArCount.parts(d.memorizedParts)}', style: const TextStyle(fontSize: 14)),
         const SizedBox(height: 4),
         Text('السورة الحالية: ${d.currentSurah ?? '—'}', style: const TextStyle(fontSize: 14)),
         const SizedBox(height: 16),

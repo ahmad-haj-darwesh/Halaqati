@@ -146,5 +146,18 @@ class Student extends Model
         return $this->hasOne(StudentProfileSubmission::class)
             ->where('status', StudentProfileSubmission::STATUS_PENDING);
     }
+
+    /**
+     * مسودّة التعديلات التي يحرّرها المعلّم ولم يُرسلها بعد.
+     *
+     * Arabic: التعديلات تُحفظ هنا ولا تُطبَّق على سجل الطالب إلا عند اعتماد المشرف،
+     * حتى يبقى الرفض قابلاً للتنفيذ دون فقدان القيم الأصلية.
+     * EN: Teacher's unsent draft; never applied to the student until approval.
+     */
+    public function draftProfileSubmission(): HasOne
+    {
+        return $this->hasOne(StudentProfileSubmission::class)
+            ->where('status', StudentProfileSubmission::STATUS_DRAFT);
+    }
 }
 

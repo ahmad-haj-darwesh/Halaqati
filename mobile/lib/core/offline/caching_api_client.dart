@@ -26,13 +26,21 @@ class CachingApiClient extends ApiClient {
         _tokenStorage = tokenStorage;
 
   @override
-  Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<Response> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    bool forceRefresh = false,
+  }) async {
     final userKey = await _tokenStorage.getUserKey();
     final canCache = OfflineDatabase.isSupported && userKey != null;
     final key = cacheKeyFor(path, queryParameters);
 
     try {
-      final response = await super.get(path, queryParameters: queryParameters);
+      final response = await super.get(
+        path,
+        queryParameters: queryParameters,
+        forceRefresh: forceRefresh,
+      );
 
       final data = response.data;
       if (canCache && data != null) {

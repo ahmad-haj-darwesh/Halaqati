@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import '../../../core/utils/arabic_plural.dart';
 import 'package:flutter/material.dart';
 
 import '../../../injection_container.dart';
@@ -81,7 +82,7 @@ class SyncStatusBar extends StatelessWidget {
       return _BarTheme(
         background: const Color(0xFFB3261E),
         icon: Icons.error_outline,
-        message: '${s.failedCount} عملية لم تُقبل — اضغط للمراجعة',
+        message: '${ArCount.operations(s.failedCount)} لم تُقبل — اضغط للمراجعة',
       );
     }
 
@@ -98,7 +99,7 @@ class SyncStatusBar extends StatelessWidget {
         background: const Color(0xFF6B5B2E),
         icon: Icons.cloud_off,
         message: s.pendingCount > 0
-            ? 'وضع دون إنترنت — ${s.pendingCount} عملية محفوظة ستُرسل تلقائياً'
+            ? 'وضع دون إنترنت — ${ArCount.operations(s.pendingCount)} محفوظة ستُرسل تلقائياً'
             : 'وضع دون إنترنت — يمكنك متابعة العمل والتسجيل',
       );
     }
@@ -106,7 +107,7 @@ class SyncStatusBar extends StatelessWidget {
     return _BarTheme(
       background: const Color(0xFF1B5E4A),
       icon: Icons.cloud_upload_outlined,
-      message: '${s.pendingCount} عملية بانتظار الإرسال',
+      message: '${ArCount.operations(s.pendingCount)} بانتظار الإرسال',
     );
   }
 }

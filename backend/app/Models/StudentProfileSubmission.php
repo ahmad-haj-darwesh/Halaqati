@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class StudentProfileSubmission extends Model
 {
+    /** مسودّة يحرّرها المعلّم ولم تُرسل للمراجعة بعد. */
+    public const STATUS_DRAFT = 'draft';
+
     public const STATUS_PENDING = 'pending';
 
     public const STATUS_APPROVED = 'approved';

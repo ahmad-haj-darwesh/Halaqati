@@ -41,12 +41,13 @@ class MockApiClient extends _i1.Mock implements _i3.ApiClient {
   _i4.Future<_i2.Response<dynamic>> get(
     String? path, {
     Map<String, dynamic>? queryParameters,
+    bool? forceRefresh = false,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
               #get,
               [path],
-              {#queryParameters: queryParameters},
+              {#queryParameters: queryParameters, #forceRefresh: forceRefresh},
             ),
             returnValue: _i4.Future<_i2.Response<dynamic>>.value(
               _FakeResponse_0<dynamic>(
@@ -54,7 +55,10 @@ class MockApiClient extends _i1.Mock implements _i3.ApiClient {
                 Invocation.method(
                   #get,
                   [path],
-                  {#queryParameters: queryParameters},
+                  {
+                    #queryParameters: queryParameters,
+                    #forceRefresh: forceRefresh,
+                  },
                 ),
               ),
             ),

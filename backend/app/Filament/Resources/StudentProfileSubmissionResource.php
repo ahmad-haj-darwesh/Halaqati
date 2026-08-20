@@ -60,6 +60,13 @@ class StudentProfileSubmissionResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('الحالة')
+                    ->formatStateUsing(fn (?string $state) => match ($state) {
+                        StudentProfileSubmission::STATUS_PENDING  => 'قيد المراجعة',
+                        StudentProfileSubmission::STATUS_APPROVED => 'مقبول',
+                        StudentProfileSubmission::STATUS_REJECTED => 'مرفوض',
+                        StudentProfileSubmission::STATUS_DRAFT    => 'مسودّة',
+                        default => $state,
+                    })
                     ->colors([
                         'warning' => StudentProfileSubmission::STATUS_PENDING,
                         'success' => StudentProfileSubmission::STATUS_APPROVED,
@@ -84,6 +91,18 @@ class StudentProfileSubmissionResource extends Resource
                     ]),
             ])
             ->actions([
+                Tables\Actions\Action::make('changes')
+                    ->label('عرض التغييرات')
+                    ->icon('heroicon-o-arrows-right-left')
+                    ->color('gray')
+                    ->modalHeading('مقارنة القيم')
+                    ->modalDescription(fn (StudentProfileSubmission $r) => 'الطالب: '.($r->student?->full_name ?? '—'))
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('إغلاق')
+                    ->modalContent(fn (StudentProfileSubmission $r) => view(
+                        'filament.resources.student-profile-submission.changes',
+                        ['rows' => self::diffRows($r)],
+                    )),
                 Tables\Actions\Action::make('approve')
                     ->label('قبول واعتماد الملف')
                     ->icon('heroicon-o-check-circle')
@@ -126,6 +145,65 @@ class StudentProfileSubmissionResource extends Resource
     }
 
     /**
+     * بناء صفوف المقارنة بين القيمة الحالية المعتمدة والقيمة المقترحة.
+     *
+     * Arabic: التعديلات لا تُطبّق على الطالب قبل الاعتماد، لذا يعرض هذا الجدول
+     * فرقاً حقيقياً يمكّن المشرف من القرار عن بيّنة.
+     * EN: Builds the current-vs-proposed diff rows for the reviewer modal.
+     *
+     * @return array<int, array{label:string, current:string, proposed:string, changed:bool}>
+     */
+    public static function diffRows(StudentProfileSubmission $submission): array
+    {
+        $student = $submission->student;
+
+        $fields = [
+            'full_name'      => 'الاسم الكامل',
+            'gender'         => 'الجنس',
+            'birth_date'     => 'تاريخ الميلاد',
+            'guardian_name'  => 'اسم ولي الأمر',
+            'guardian_phone' => 'هاتف ولي الأمر',
+            'national_id'    => 'الهوية الوطنية',
+            'notes'          => 'ملاحظات',
+            'photo_path'     => 'الصورة',
+        ];
+
+        $format = static function (string $key, mixed $value): string {
+            if ($value === null || $value === '') {
+                return '—';
+            }
+
+            return match ($key) {
+                'gender' => $value === 'male' ? 'ذكر' : 'أنثى',
+                'birth_date' => $value instanceof \DateTimeInterface
+                    ? $value->format('Y/m/d')
+                    : (string) $value,
+                'photo_path' => 'صورة مرفوعة',
+                default => (string) $value,
+            };
+        };
+
+        $rows = [];
+
+        foreach ($fields as $key => $label) {
+            $current = $student?->{$key};
+            $proposed = $submission->{$key};
+
+            $currentText = $format($key, $current);
+            $proposedText = $format($key, $proposed);
+
+            $rows[] = [
+                'label'    => $label,
+                'current'  => $currentText,
+                'proposed' => $proposedText,
+                'changed'  => $currentText !== $proposedText,
+            ];
+        }
+
+        return $rows;
+    }
+
+    /**
      * تقييد الاستعلام حسب دور المستخدم في لوحة الإدارة.
      *
      * Arabic: SuperAdmin يرى كل الطلبات، وAdmin يرى طلبات الطلاب ضمن مراكزه المدارة.
@@ -133,7 +211,10 @@ class StudentProfileSubmissionResource extends Resource
      */
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery()->with(['student', 'teacher', 'reviewer']);
+        // المسودّات ما زالت تحت يد المعلّم ولم تُرسل للمراجعة — لا تظهر للمشرف.
+        $query = parent::getEloquentQuery()
+            ->with(['student', 'teacher', 'reviewer'])
+            ->where('status', '!=', StudentProfileSubmission::STATUS_DRAFT);
 
         /** @var \App\Models\User|null $user */
         $user = auth()->user();

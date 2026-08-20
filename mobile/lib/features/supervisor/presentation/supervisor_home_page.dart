@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/utils/arabic_plural.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../services/api/api_client.dart';
@@ -234,7 +235,7 @@ class _SupervisorHomeView extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    '${s.unvisitedHalaqahs} حلقات لم تُزر منذ 30 يوماً',
+                    '${ArCount.halaqahs(s.unvisitedHalaqahs)} لم تُزر منذ 30 يوماً',
                     style: TextStyle(color: Colors.orange.shade900, fontWeight: FontWeight.w600),
                   ),
                 ),
